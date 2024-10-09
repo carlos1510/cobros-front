@@ -5,7 +5,9 @@ import Transition from '../utils/Transition';
 //import UserAvatar from '../images/user-avatar-32.png';
 import UserAvatar from '../images/users-default.png';
 
-function DropdownProfile({ align }) {
+type AlignOptions = 'left' | 'right' | 'center';
+
+function DropdownProfile({ align }: { align: AlignOptions }) {
     const [dropdownOpen, setDropdownOpen] = React.useState(false);
 
     const initialRef: any = null;
@@ -14,24 +16,26 @@ function DropdownProfile({ align }) {
 
     // close on click outside
     React.useEffect(() => {
-        const clickHandler = ({ target }) => {
+        const clickHandler = (event: MouseEvent) => {
+            const { target } = event;
             if (!dropdown.current) return;
-            if (!dropdownOpen || dropdown.current.contains(target) || trigger.current.contains(target)) return;
+            if (!dropdownOpen || dropdown.current.contains(target as Node) || trigger.current.contains(target as Node)) return;
             setDropdownOpen(false);
         };
         document.addEventListener("click", clickHandler);
         return () => document.removeEventListener("click", clickHandler);
-    });
+    }, [dropdownOpen]);
 
     // close if the esc key is pressed
     React.useEffect(() => {
-        const keyHandler = ({ keyCode }) => {
+        const keyHandler = (event: KeyboardEvent) => {
+            const { keyCode } = event;
             if (keyCode !== 27 && !dropdownOpen) return;
             setDropdownOpen(false);
         };
         document.addEventListener("keydown", keyHandler);
         return () => document.removeEventListener("keydown", keyHandler);
-    });
+    }, [dropdownOpen]);
 
     return (
         <div className="relative inline-flex">
