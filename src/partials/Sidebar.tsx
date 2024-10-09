@@ -5,7 +5,13 @@ import { NavLink, useLocation } from 'react-router-dom';
 
 import logo from "../images/logo-cobros-48.png";
 
-function Sidebar({ sidebarOpen, setSidebarOpen, variant = 'default' }) {
+interface SidebarProps {
+    sidebarOpen: boolean;
+    setSidebarOpen: (open: boolean) => void;
+    variant?: 'default' | 'v2' | 'v3';
+  }
+
+function Sidebar({ sidebarOpen, setSidebarOpen, variant = 'default' }: SidebarProps) {
     const location = useLocation();
     const { pathname } = location;
 
@@ -18,7 +24,8 @@ function Sidebar({ sidebarOpen, setSidebarOpen, variant = 'default' }) {
 
     // close on click outside
     React.useEffect(() => {
-        const clickHandler = ({ target }) => {
+        const clickHandler = (event: MouseEvent) => {
+            const { target } = event;
             if (!sidebar.current || !trigger.current) return;
             if (!sidebarOpen || sidebar.current.contains(target) || trigger.current.contains(target)) return null;
             setSidebarOpen(false);
@@ -28,7 +35,8 @@ function Sidebar({ sidebarOpen, setSidebarOpen, variant = 'default' }) {
     });
 
     React.useEffect(() => {
-        const keyHandler = ({ keyCode }) => {
+        const keyHandler = (event: KeyboardEvent) => {
+            const { keyCode } = event;
             if (keyCode!== 27 || !sidebarOpen) return null;
             setSidebarOpen(false);
         }

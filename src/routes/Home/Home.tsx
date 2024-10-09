@@ -10,9 +10,11 @@ function Home(){
       const location = useLocation();
 
       React.useEffect(() => {
-        document.querySelector('html').style.scrollBehavior = 'auto'
+        const element = document.querySelector('html');
+        if (element !== null) element.style.scrollBehavior = 'auto';
         window.scroll({ top: 0 })
-        document.querySelector('html').style.scrollBehavior = ''
+        const element2 = document.querySelector('html');
+        if (element2 !== null) element2.style.scrollBehavior = '';
       }, [location.pathname]); // triggered on route change
 
       const [sidebarOpen, setSidebarOpen] = React.useState(false);
