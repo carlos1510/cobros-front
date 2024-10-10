@@ -18,7 +18,7 @@ export default {
     }, */
     extend: {
       backgroundImage: {
-        'background': "url('./src/assets/J4o.gif')"
+        'background': "url('/assets/J4o.gif')"
       },
       screens: {
         xs: "340px",
