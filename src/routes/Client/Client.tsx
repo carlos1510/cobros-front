@@ -25,6 +25,7 @@ const clients = [
 function Client() {
     return (
         <div className="p-4">
+            
             <div className="flex flex-col md:flex-row md:justify-between mb-4">
                 {/* Titulo */}
                 <h2 className="text-3xl text-teal-600 font-bold mb-2 md:mb-0">Lista de clientes</h2>
