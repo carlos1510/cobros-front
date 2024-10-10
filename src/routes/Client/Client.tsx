@@ -1,5 +1,5 @@
 
-import { FaMoneyBillAlt, FaListOl, FaRegCircle, FaRegCheckCircle   } from "react-icons/fa";
+import { FaMoneyBillAlt, FaListOl, FaRegCircle, FaRegCheckCircle, FaSearch   } from "react-icons/fa";
 
 const clients = [
     {
@@ -25,7 +25,21 @@ const clients = [
 function Client() {
     return (
         <div className="p-4">
-            <h2 className="pb-4 text-3xl text-teal-600 font-bold">Lista de clientes</h2>
+            <div className="flex flex-col md:flex-row md:justify-between mb-4">
+                {/* Titulo */}
+                <h2 className="text-3xl text-teal-600 font-bold mb-2 md:mb-0">Lista de clientes</h2>
+                
+                {/* Buscador */}
+                <div className="w-full md:w-1/3 relative">
+                    {/*  className="w-full md:w-1/3 p-2 border border-gray-400 rounded-lg bg-transparent focus:border-teal-700 focus:outline-none" */}
+                    <input 
+                        type="text" 
+                        placeholder="Escribe para buscar"
+                        className="'border border-gray-400 w-full rounded-lg p-2 bg-transparent"
+                    />
+                    <FaSearch className="absolute top-[30%] right-3" />
+                </div>
+            </div>
             {/* Para pantallas grandes */}
             <div className="hidden md:block">
                 <table className="min-w-full bg-teal-50 dark:bg-gray-800 boder rounded-lg">
