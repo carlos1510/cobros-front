@@ -1,9 +1,11 @@
 //import './main.js'
 
 import * as React from 'react';
-import { useLocation } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import Header from '../../partials/Header';
 import Sidebar from '../../partials/Sidebar';
+
+import '../../css/style.css';
 
 function Home(){
 
@@ -31,6 +33,12 @@ function Home(){
               <div className="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
                 {/*  Site header */}
                 <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+
+                <main className="grow">
+                  <div className="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
+                    <Outlet />
+                  </div>
+                </main>
               </div>
 
             </div>
