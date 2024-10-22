@@ -1,17 +1,17 @@
 import { FaPencilAlt, FaTrashAlt } from "react-icons/fa";
 
-interface User {
+interface Collention {
     id: number;
     name: string;
     username: string;
     role: string;
 }
 
-interface TableUserProps {
-    data: User[];
+interface TableCollentionProps {
+    data: Collention[];
 }
 
-function TableUser({ data }: TableUserProps) {
+function TableCollention({ data, onClick }: TableCollentionProps) {
     return (
         <div className="col-span-full xl:col-span-6 bg-teal-50 dark:bg-gray-800 shadow-sm rounded-xl">
             <div className="p-3">
@@ -41,23 +41,23 @@ function TableUser({ data }: TableUserProps) {
                         </thead>
                         <tbody className="text-sm divide-y divide-gray-100 dark:divide-gray-700/60">
                             {
-                                data?.map((user) => {
+                                data?.map((collention) => {
                                     return (
-                                        <tr key={user.id}>
+                                        <tr key={collention.id}>
                                             <td className="p-2 whitespace-nowrap text-gray-600 dark:text-gray-400">
-                                                {user.id}
+                                                {collention.id}
                                             </td>
                                             <td className="p-2 whitespace-nowrap text-gray-600 dark:text-gray-400">
-                                                {user.name}
+                                                {collention.name}
                                             </td>
                                             <td className="p-2 whitespace-nowrap text-gray-600 dark:text-gray-400">
-                                                {user.username}
+                                                {collention.username}
                                             </td>
                                             <td className="p-2 whitespace-nowrap text-gray-600 dark:text-gray-400">
-                                                {user.role}
+                                                {collention.role}
                                             </td>
                                             <td className="p-2 whitespace-nowrap text-gray-600 dark:text-gray-400">
-                                                <button className="bg-teal-600 hover:bg-teal-800 text-white py-2 px-3 mr-1" title="Cobrar">
+                                                <button className="bg-teal-600 hover:bg-teal-800 text-white py-2 px-3 mr-1" title="Editar" onClick={onClick}> 
                                                     <FaPencilAlt />
                                                 </button>
                                             </td>
@@ -78,4 +78,4 @@ function TableUser({ data }: TableUserProps) {
     );
 }
 
-export default TableUser;
+export default TableCollention;
