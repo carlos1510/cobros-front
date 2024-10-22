@@ -1,17 +1,17 @@
 import { FaPencilAlt, FaTrashAlt } from "react-icons/fa";
 
-interface User {
+interface Loan {
     id: number;
     name: string;
     username: string;
     role: string;
 }
 
-interface TableUserProps {
-    data: User[];
+interface TableLoanProps {
+    data: Loan[];
 }
 
-function TableUser({ data }: TableUserProps) {
+function TableLoan({ data, onClick }: TableLoanProps) {
     return (
         <div className="col-span-full xl:col-span-6 bg-teal-50 dark:bg-gray-800 shadow-sm rounded-xl">
             <div className="p-3">
@@ -57,7 +57,7 @@ function TableUser({ data }: TableUserProps) {
                                                 {user.role}
                                             </td>
                                             <td className="p-2 whitespace-nowrap text-gray-600 dark:text-gray-400">
-                                                <button className="bg-teal-600 hover:bg-teal-800 text-white py-2 px-3 mr-1" title="Cobrar">
+                                                <button className="bg-teal-600 hover:bg-teal-800 text-white py-2 px-3 mr-1" title="Cobrar" onClick={onClick}>
                                                     <FaPencilAlt />
                                                 </button>
                                             </td>
@@ -78,4 +78,4 @@ function TableUser({ data }: TableUserProps) {
     );
 }
 
-export default TableUser;
+export default TableLoan;
