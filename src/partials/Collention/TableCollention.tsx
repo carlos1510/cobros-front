@@ -1,4 +1,5 @@
 import { FaPencilAlt, FaTrashAlt } from "react-icons/fa";
+import { formatoFecha2 } from "../../utils/FormDate";
 
 interface Collention {
     id: number;
@@ -11,7 +12,7 @@ interface TableCollentionProps {
     data: Collention[];
 }
 
-function TableCollention({ data, onClick }: TableCollentionProps) {
+function TableCollention({ data, onClick, onPayClick }: TableCollentionProps) {
     return (
         <div className="col-span-full xl:col-span-6 bg-teal-50 dark:bg-gray-800 shadow-sm rounded-xl">
             <div className="p-3">
@@ -23,13 +24,16 @@ function TableCollention({ data, onClick }: TableCollentionProps) {
                                     <div className="font-semibold text-left">#</div>
                                 </th>
                                 <th className="p-2 whitespace-nowrap">
-                                    <div className="font-semibold text-left">Nombres</div>
+                                    <div className="font-semibold text-left">Dni</div>
                                 </th>
                                 <th className="p-2 whitespace-nowrap">
-                                    <div className="font-semibold text-left">Usuario</div>
+                                    <div className="font-semibold text-left">Cliente</div>
                                 </th>
                                 <th className="p-2 whitespace-nowrap">
-                                    <div className="font-semibold text-left">Rol</div>
+                                    <div className="font-semibold text-left">Fecha</div>
+                                </th>
+                                <th className="p-2 whitespace-nowrap">
+                                    <div className="font-semibold text-left">Monto</div>
                                 </th>
                                 <th className="p-2 whitespace-nowrap">
                                     <div className="font-semibold text-left">Editar</div>
@@ -41,23 +45,26 @@ function TableCollention({ data, onClick }: TableCollentionProps) {
                         </thead>
                         <tbody className="text-sm divide-y divide-gray-100 dark:divide-gray-700/60">
                             {
-                                data?.map((collention) => {
+                                data?.map((collention, index) => {
                                     return (
                                         <tr key={collention.id}>
                                             <td className="p-2 whitespace-nowrap text-gray-600 dark:text-gray-400">
-                                                {collention.id}
+                                                {index + 1}
                                             </td>
                                             <td className="p-2 whitespace-nowrap text-gray-600 dark:text-gray-400">
-                                                {collention.name}
+                                            {collention.credit.client.numberDocument}
                                             </td>
                                             <td className="p-2 whitespace-nowrap text-gray-600 dark:text-gray-400">
-                                                {collention.username}
+                                                {collention.credit.client.fullName}
                                             </td>
                                             <td className="p-2 whitespace-nowrap text-gray-600 dark:text-gray-400">
-                                                {collention.role}
+                                                {formatoFecha2(collention.payDate)}
+                                            </td>
+                                            <td className="p-2 whitespace-nowrap text-right text-gray-600 dark:text-gray-400">
+                                                S/. {collention.amount}
                                             </td>
                                             <td className="p-2 whitespace-nowrap text-gray-600 dark:text-gray-400">
-                                                <button className="bg-teal-600 hover:bg-teal-800 text-white py-2 px-3 mr-1" title="Editar" onClick={onClick}> 
+                                                <button className="bg-teal-600 hover:bg-teal-800 text-white py-2 px-3 mr-1" title="Editar" onClick={() => {onClick(); onPayClick(collention)}}> 
                                                     <FaPencilAlt />
                                                 </button>
                                             </td>

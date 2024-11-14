@@ -1,46 +1,17 @@
 import * as React from 'react';
-import { FaSave, FaSearch, FaTimes } from "react-icons/fa";
+import { FaSearch } from "react-icons/fa";
 import TableCollention from "../../partials/Collention/TableCollention";
 import CollentionForm from '../../components/CollentionForm';
+import { DatePicker } from "antd";
+import dayjs from 'dayjs';
+import axios from 'axios';
+import {formatoFecha} from '../../utils/FormDate';
 interface Collention {
     id: string;
     name: string;
     username: string;
     role: string;
 }
-
-const collentions = [
-    {
-      id: '0',
-      name: 'Alex Shatov',
-      username: 'alexshatov@gmail.com',
-      role: '🇺🇸',
-    },
-    {
-      id: '1',
-      name: 'Philip Harbach',
-      username: 'philip.h@gmail.com',
-      role: '🇩🇪',
-    },
-    {
-      id: '2',
-      name: 'Mirko Fisuk',
-      username: 'mirkofisuk@gmail.com',
-      role: '🇫🇷',
-    },
-    {
-      id: '3',
-      name: 'Olga Semklo',
-      username: 'olga.s@cool.design',
-      role: '🇮🇹',
-    },
-    {
-      id: '4',
-      name: 'Burak Long',
-      username: 'longburak@gmail.com',
-      role: '🇬🇧',
-    },
-  ];
 
 const formData = {
     id: 0,
@@ -52,8 +23,37 @@ const formData = {
 
 function Collention() {
     const [isEdit, setIsEdit] = React.useState(false);
+    const [collentions, setCollentions] = React.useState([]);
+    const [selectedPay, setSelectedPay] = React.useState(null);
+
+    const dateFormat = 'DD/MM/YYYY';
+    const date = new Date();
+        // Crear la fecha mínima a partir del objeto Date (formato nativo)
+    const [startDate, setStartDate] = React.useState(`${date.getDate().toString().padStart(2, '0')}/${(date.getMonth()+1).toString().padStart(2,'0')}/${date.getFullYear()}`);
+
+    React.useEffect(() => {
+        handlePayList();
+    }, []);
+
+    function onChange(date, dateString) {
+        //setDate(date);
+        setStartDate(dateString);
+        console.log(dateString);
+    }
+
     const handleForm1Submit = (formData) => {
         console.log("Datos del primer formulario:", formData);
+    };
+
+    const handlePayList = async () => {
+        const response = await axios.get(`${process.env.PUBLIC_URL}/fees/${formatoFecha(startDate)}`);
+        setCollentions(response.data.data);
+    };
+
+    const handlePaySelect = (user) => {
+        console.log(user);
+        setSelectedPay(user);
+        //setIsEdit(true);
     };
     return (
         <>
@@ -65,30 +65,33 @@ function Collention() {
     
                         {/* Left: Title */}
                         <div className="mb-4 sm:mb-0">
-                            <h1 className="text-2xl md:text-3xl text-teal-600 dark:text-gray-100 font-bold">Cobros</h1>
+                            <h1 className="text-2xl md:text-3xl text-teal-700 dark:text-gray-100 font-bold">Cobros</h1>
                         </div>
     
                         {/* Right: Actions */}
                         <div className="grid grid-flow-col sm:auto-cols-max justify-start sm:justify-end gap-2">
                         {/* Datepicker built with flatpickr */}
-                        <div className="relative">
-                            <input type="text" className="form-input pl-9 dark:bg-gray-800 text-gray-600 rounded-md hover:text-gray-800 dark:text-gray-300 dark:hover:text-gray-100 font-medium w-[15.5rem]" />
-                            <div className="absolute inset-0 right-auto flex items-center pointer-events-none">
-                                <svg className="fill-current text-gray-400 dark:text-gray-500 ml-3" width="16" height="16" viewBox="0 0 16 16">
-                                <path d="M5 4a1 1 0 0 0 0 2h6a1 1 0 1 0 0-2H5Z" />
-                                <path d="M4 0a4 4 0 0 0-4 4v8a4 4 0 0 0 4 4h8a4 4 0 0 0 4-4V4a4 4 0 0 0-4-4H4ZM2 4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V4Z" />
-                                </svg>
+                            <div className="relative">
+                           
+                                <DatePicker className="appearance-none block w-full border border-gray-400 rounded-md py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" 
+                                    format={dateFormat} 
+                                    defaultValue={dayjs(startDate, dateFormat)}
+                                    name='creditDate'
+                                    inputReadOnly={true}                                    
+                                    onChange={onChange}
+                                />
                             </div>
-                            </div>
-                        {/* Add view button */}
-                        <button className="btn bg-gray-900 w-10 text-center text-gray-100 hover:bg-gray-800 rounded-md dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white">
-                            <FaSearch className="m-3" />
-                        </button>                
+                            {/* Add view button */}
+                            <button className="btn bg-gray-900 w-10 text-center text-gray-100 hover:bg-gray-800 rounded-md dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white"
+                                onClick={handlePayList}
+                            >
+                                <FaSearch className="m-3" />
+                            </button>                
                         </div>
     
                         </div>
                     {/* Card (Users) */}
-                    <TableCollention data={collentions} onClick={() => setIsEdit(true)} />
+                    <TableCollention data={collentions} onClick={() => setIsEdit(true)} onPayClick={handlePaySelect} />
                 </div>)
             }
 
