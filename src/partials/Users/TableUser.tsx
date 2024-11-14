@@ -2,8 +2,11 @@ import { FaPencilAlt, FaTrashAlt } from "react-icons/fa";
 
 interface User {
     id: number;
-    name: string;
+    numberDocument: string;
     username: string;
+    fullName: string;
+    phone: string;
+    userName: string;
     role: string;
 }
 
@@ -11,7 +14,7 @@ interface TableUserProps {
     data: User[];
 }
 
-function TableUser({ data }: TableUserProps) {
+function TableUser({ data, onClick, onUserClick  }: TableUserProps) {
     return (
         <div className="col-span-full xl:col-span-6 bg-teal-50 dark:bg-gray-800 shadow-sm rounded-xl">
             <div className="p-3">
@@ -23,7 +26,13 @@ function TableUser({ data }: TableUserProps) {
                                     <div className="font-semibold text-left">#</div>
                                 </th>
                                 <th className="p-2 whitespace-nowrap">
+                                    <div className="font-semibold text-left">Nro. Documento</div>
+                                </th>
+                                <th className="p-2 whitespace-nowrap">
                                     <div className="font-semibold text-left">Nombres</div>
+                                </th>
+                                <th className="p-2 whitespace-nowrap">
+                                    <div className="font-semibold text-left">Telefono</div>
                                 </th>
                                 <th className="p-2 whitespace-nowrap">
                                     <div className="font-semibold text-left">Usuario</div>
@@ -43,21 +52,27 @@ function TableUser({ data }: TableUserProps) {
                             {
                                 data?.map((user) => {
                                     return (
-                                        <tr key={user.id}>
+                                        <tr key={user.id} >
                                             <td className="p-2 whitespace-nowrap text-gray-600 dark:text-gray-400">
                                                 {user.id}
                                             </td>
                                             <td className="p-2 whitespace-nowrap text-gray-600 dark:text-gray-400">
-                                                {user.name}
+                                                {user.numberDocument}
                                             </td>
                                             <td className="p-2 whitespace-nowrap text-gray-600 dark:text-gray-400">
-                                                {user.username}
+                                                {user.fullName}
+                                            </td>
+                                            <td className="p-2 whitespace-nowrap text-gray-600 dark:text-gray-400">
+                                                {user.phone}
+                                            </td>
+                                            <td className="p-2 whitespace-nowrap text-gray-600 dark:text-gray-400">
+                                                {user.userName}
                                             </td>
                                             <td className="p-2 whitespace-nowrap text-gray-600 dark:text-gray-400">
                                                 {user.role}
                                             </td>
                                             <td className="p-2 whitespace-nowrap text-gray-600 dark:text-gray-400">
-                                                <button className="bg-teal-600 hover:bg-teal-800 text-white py-2 px-3 mr-1" title="Cobrar">
+                                                <button className="bg-teal-600 hover:bg-teal-800 text-white py-2 px-3 mr-1" title="Editar" onClick={() => {onClick(); onUserClick(user);}}>
                                                     <FaPencilAlt />
                                                 </button>
                                             </td>
