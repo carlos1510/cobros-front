@@ -1,6 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
-import App from "./App";
-import Home from "./routes/Home"
+import App, { action as loginAction } from "./App";
+import Home, { loader as rootLoader } from "./routes/Home/Home";
+//import { loader } from "./routes/Home/Home";
 import ThemeProvider from "./utils/ThemeContext";
 import Client from "./routes/Client";
 import Loan from "./routes/Loan";
@@ -13,6 +14,7 @@ export const router = createBrowserRouter(
             id: "app",
             path: "/home?",
             element: <ThemeProvider><Home /></ThemeProvider>,
+            loader: rootLoader,
             children: [
                 // Add more routes here...
                 {
@@ -36,6 +38,7 @@ export const router = createBrowserRouter(
         {
             path: "/login",
             element: <App />,
+            action: loginAction,
         },
     // Add more routes here...
  
