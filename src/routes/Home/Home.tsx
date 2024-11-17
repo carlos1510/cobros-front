@@ -17,6 +17,7 @@ export function loader({ request}) {
 
   const tokenExpiration = new Date(authProvider.token.exp).getTime() - new Date().getTime();
 
+  console.log("tiempo actual", new Date().getTime())
   console.log(tokenExpiration);
 
   if(tokenExpiration < 1){
