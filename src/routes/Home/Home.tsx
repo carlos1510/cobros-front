@@ -15,6 +15,10 @@ export function loader({ request}) {
     return redirect("/login?" + params.toString());
   }
 
+  console.log("fecha actual", new Date());
+  console.log("token expired", authProvider.token.exp);
+  console.log("token expired time", new Date(authProvider.token.exp).getTime());
+
   const tokenExpiration = new Date(authProvider.token.exp).getTime() - new Date().getTime();
 
   console.log("tiempo actual", new Date().getTime())
