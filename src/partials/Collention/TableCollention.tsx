@@ -1,15 +1,25 @@
 import { FaPencilAlt, FaTrashAlt } from "react-icons/fa";
 import { formatoFecha2 } from "../../utils/FormDate";
 
+interface Credit {
+    client: {
+      numberDocument: string; // or whatever type it should be
+      fullName: string;
+      
+    };
+  }
+  
 interface Collention {
+    credit: Credit;
     id: number;
-    name: string;
-    username: string;
-    role: string;
+    payDate: string; // or whatever type it should be
+    amount: number; // or whatever type it should be
 }
 
 interface TableCollentionProps {
     data: Collention[];
+    onClick: () => void; // Ajusta el tipo del parámetro si es necesario
+    onPayClick: (item: Collention) => void;
 }
 
 function TableCollention({ data, onClick, onPayClick }: TableCollentionProps) {
@@ -45,26 +55,26 @@ function TableCollention({ data, onClick, onPayClick }: TableCollentionProps) {
                         </thead>
                         <tbody className="text-sm divide-y divide-gray-100 dark:divide-gray-700/60">
                             {
-                                data?.map((collention, index) => {
+                                data?.map((item, index) => {
                                     return (
-                                        <tr key={collention.id}>
+                                        <tr key={item.id}>
                                             <td className="p-2 whitespace-nowrap text-gray-600 dark:text-gray-400">
                                                 {index + 1}
                                             </td>
                                             <td className="p-2 whitespace-nowrap text-gray-600 dark:text-gray-400">
-                                            {collention.credit.client.numberDocument}
+                                            {item.credit.client.numberDocument}
                                             </td>
                                             <td className="p-2 whitespace-nowrap text-gray-600 dark:text-gray-400">
-                                                {collention.credit.client.fullName}
+                                                {item.credit.client.fullName}
                                             </td>
                                             <td className="p-2 whitespace-nowrap text-gray-600 dark:text-gray-400">
-                                                {formatoFecha2(collention.payDate)}
+                                                {formatoFecha2(item.payDate)}
                                             </td>
                                             <td className="p-2 whitespace-nowrap text-right text-gray-600 dark:text-gray-400">
-                                                S/. {collention.amount}
+                                                S/. {item.amount}
                                             </td>
                                             <td className="p-2 whitespace-nowrap text-gray-600 dark:text-gray-400">
-                                                <button className="bg-teal-600 hover:bg-teal-800 text-white py-2 px-3 mr-1" title="Editar" onClick={() => {onClick(); onPayClick(collention)}}> 
+                                                <button className="bg-teal-600 hover:bg-teal-800 text-white py-2 px-3 mr-1" title="Editar" onClick={() => {onClick(); onPayClick(item)}}> 
                                                     <FaPencilAlt />
                                                 </button>
                                             </td>

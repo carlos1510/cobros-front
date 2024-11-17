@@ -12,6 +12,8 @@ interface User {
 
 interface TableUserProps {
     data: User[];
+    onClick: () => void; 
+    onUserClick: (item: User) => void;
 }
 
 function TableUser({ data, onClick, onUserClick  }: TableUserProps) {

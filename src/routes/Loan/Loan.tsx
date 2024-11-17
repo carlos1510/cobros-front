@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FaPlus, FaSave, FaSearch, FaTimes } from "react-icons/fa";
+import { FaPlus, FaSearch } from "react-icons/fa";
 import TableLoan from "../../partials/Loans/TableLoan";
 import LoanForm from '../../components/LoanForm';
 import axios from 'axios';
@@ -7,13 +7,6 @@ import Swal from 'sweetalert2';
 import { DatePicker } from 'antd';
 import dayjs from 'dayjs';
 import { formatoFecha } from '../../utils/FormDate';
-
-interface User {
-    id: string;
-    name: string;
-    username: string;
-    role: string;
-}
 
 const initialValues = {
     id: 0,

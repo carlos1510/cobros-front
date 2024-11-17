@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FaPlus, FaSave, FaSearch, FaTimes } from "react-icons/fa";
+import { FaPlus} from "react-icons/fa";
 import TableUser from "../../partials/Users/TableUser";
 import UserForm from '../../components/UserForm';
 import axios from 'axios';
@@ -28,6 +28,8 @@ function User() {
     const [selectedUser, setSelectedUser] = React.useState(null);
     const [users, setUsers] = React.useState([]);
     const [formData, setFormData] = React.useState(initialValues);
+
+    console.log(selectedUser);
 
     React.useEffect(() => {
         handleUserList();

@@ -15,7 +15,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen, variant = 'default' }: SidebarPr
     const location = useLocation();
     const { pathname } = location;
 
-    const initialRef: any = null;
+    const initialRef = null;
     const trigger = React.useRef(initialRef);
     const sidebar = React.useRef(initialRef);
 

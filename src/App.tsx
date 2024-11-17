@@ -5,20 +5,28 @@ import './App.css'
 import { Form, redirect, useActionData, useLocation } from 'react-router-dom';
 import { authProvider } from './auth';
 
-export async function action({ request }) {
-  let formData = await request.formData();
-  let username = formData.get("username");
-  let password = formData.get("password");
+interface ActionData {
+  error?: string;
+}
+
+export async function action({ request }: { request: Request}): Promise<Response | ActionData> {
+  const formData = await request.formData();
+  const username = formData.get("username") as string | null;
+  const password = formData.get("password") as string | null;
+
+  if (!username || !password) { 
+    return { error: "Please enter both username and password" };
+  }
 
   try{
 
     await authProvider.login(username, password);
 
-  }catch(error){
-      return { error: "Error al iniciar sesión", };
+  } catch(error) {
+      return { error: "Error al iniciar sesión " + error};
   }
 
-  let redirectTo = formData.get("redirectTo");
+  //let redirectTo = formData.get("redirectTo");
 
   return redirect("/home");
 }
@@ -60,8 +68,8 @@ function App() {
                 />
                 <FaLock className="absolute top-[40%] right-3" />
               </div>
-              {actionData?.error && (
-                    <p className="text-red-500">{actionData?.error}</p>
+              {(actionData as ActionData)?.error && (
+                    <p className="text-red-500">{(actionData as ActionData)?.error}</p>
                 )}
               <button type="submit" className="my-2 py-2 w-full rounded-full bg-blue-600">Iniciar</button>
               <span>Copyright © 2024 - Carlos Vásquez</span>

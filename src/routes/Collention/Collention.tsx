@@ -25,6 +25,7 @@ function Collention() {
     const [isEdit, setIsEdit] = React.useState(false);
     const [collentions, setCollentions] = React.useState([]);
     const [selectedPay, setSelectedPay] = React.useState(null);
+    console.log(selectedPay);
 
     const dateFormat = 'DD/MM/YYYY';
     const date = new Date();
@@ -37,8 +38,9 @@ function Collention() {
 
     function onChange(date, dateString) {
         //setDate(date);
+        console.log(date);
         setStartDate(dateString);
-        console.log(dateString);
+        //console.log(dateString);
     }
 
     const handleForm1Submit = (formData) => {
@@ -51,7 +53,6 @@ function Collention() {
     };
 
     const handlePaySelect = (user) => {
-        console.log(user);
         setSelectedPay(user);
         //setIsEdit(true);
     };
@@ -60,7 +61,6 @@ function Collention() {
             {
                 !isEdit && (
                 <div className="p-4">
-                
                     <div className="sm:flex sm:justify-between sm:items-center mb-8">
     
                         {/* Left: Title */}
