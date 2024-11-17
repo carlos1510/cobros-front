@@ -64,6 +64,7 @@ function DropdownProfile({ align, name, rol }: DropdownProfileProps) {
             <Transition 
                 className={`origin-top-right z-10 absolute top-full min-w-44 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700/60 py-1.5 rounded-lg shadow-lg overflow-hidden mt-1 ${align === 'right' ? 'right-0' : 'left-0'}`}  
                 show={dropdownOpen} 
+                appear={true}
                 enter="transition ease-out duration-200 transform"
                 enterStart="opacity-0 -translate-y-2"
                 enterEnd="opacity-100 translate-y-0"
