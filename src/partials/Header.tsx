@@ -1,4 +1,3 @@
-import * as React from 'react';
 import UserMenu from '../components/DropdownProfile';
 import ThemeToggle from '../components/ThemeToggle';
 
