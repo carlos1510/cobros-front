@@ -19,6 +19,7 @@ function LoanForm({ titleForm, onSubmit, formDataParams, onClick }) {
 
     function onChangeStart(date, dateString) {
         //setDate(date);
+        console.log(date);
         setStartDate(dateString);
         setFormData({...formData, creditDate: dateString});
         console.log(dateString);
@@ -27,6 +28,7 @@ function LoanForm({ titleForm, onSubmit, formDataParams, onClick }) {
     function onChangeEnd(date, dateString) {
         //setDate(date);
         //setStartDate(dateString);
+        console.log(date);
         setFormData({...formData, endDate: dateString});
         console.log(dateString);
     }

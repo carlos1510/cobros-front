@@ -1,15 +1,28 @@
 import { FaPencilAlt, FaTrashAlt } from "react-icons/fa";
 import { formatoFecha2 } from "../../utils/FormDate";
 
+interface Service {
+    serviceName: string;
+}
+
+interface Client {
+    numberDocument: string;
+    fullName: string;
+
+}
 interface Loan {
     id: number;
-    name: string;
-    username: string;
-    role: string;
+    service: Service;
+    client: Client;
+    creditDate: string;
+    endDate: string;
+    amount: number;
+    totalAmount: number;
 }
 
 interface TableLoanProps {
     data: Loan[];
+    onClick: () => void; 
 }
 
 function TableLoan({ data, onClick }: TableLoanProps) {

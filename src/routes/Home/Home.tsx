@@ -10,7 +10,7 @@ import { authProvider } from '../../auth';
 
 export function loader({ request}) {
   if(!authProvider.isAuthenticated){
-    let params = new URLSearchParams();
+    const params = new URLSearchParams();
     params.set("from", new URL(request.url).pathname);
     return redirect("/login?" + params.toString());
   }
@@ -20,21 +20,41 @@ export function loader({ request}) {
   console.log(tokenExpiration);
 
   if(tokenExpiration < 1){
-    let params = new URLSearchParams();
+    const params = new URLSearchParams();
     params.set("from", new URL(request.url).pathname);
     return redirect("/login?" + params.toString());
   }
 
-  const username: string = authProvider.token.user.userName;
-  const namefull = authProvider.token.user.fullName;
-  const name = namefull ? namefull.split(" ")[0]:"";
-  const rol: string = authProvider.token.user.role;
+  let name: string = "";
+  let rol: string = "";
 
-  return {username, namefull, name, rol};
+  if ('user' in authProvider.token && authProvider.token.user) {
+    const namefull = authProvider.token.user.fullName;
+    name = namefull ? namefull.split(" ")[0] : "";
+    rol = authProvider.token.user.role;
+  } else {
+    // Handle cases where `authProvider.token` does not have `user`
+    console.error("Token does not have user data.");
+  }
+
+  //const username: string = authProvider.token.user.userName;
+  //const namefull = authProvider.token.user.fullName;
+  //const name = namefull ? namefull.split(" ")[0]:"";
+  //const rol: string = authProvider.token.user.role;
+
+  //return {username, namefull, name, rol};
+  return { name, rol};
+}
+
+interface LoaderData {
+  name: string;
+  rol: string;
 }
 
 function Home(){
-  const { username, namefull, name, rol } = useLoaderData();
+  //const { username, namefull, name, rol } = useLoaderData();
+  const { name, rol} = useLoaderData() as LoaderData;
+  //const { name, rol } = data;
 
       const location = useLocation();
 

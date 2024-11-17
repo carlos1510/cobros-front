@@ -1,8 +1,20 @@
 import * as React from 'react';
 import { CSSTransition as ReactCSSTransition } from 'react-transition-group';
 
-const TransitionContext = React.createContext({
-    parent: {},
+interface TransitionContextValue {
+  parent: {
+      show: boolean;
+      appear: boolean;
+      isInitialRender: boolean;
+  };
+}
+
+const TransitionContext = React.createContext<TransitionContextValue>({
+    parent: {
+      show: false,
+      appear: false,
+      isInitialRender: true,
+    },
 });
 
 function useIsInitialRender() {
@@ -25,7 +37,7 @@ interface CSSTransitionProps {
     unmountOnExit?: boolean;
     tag?: React.ElementType; // Tipo para el nombre de la etiqueta HTML
     children: React.ReactNode; // Para componentes que renderizan hijos
-    [key: string]: any; // Para manejar props adicionales como rest
+    [key: string]: unknown; // Para manejar props adicionales como rest
   
 }
 
@@ -61,8 +73,7 @@ function CSSTransition({
       if (classes.length) node.classList.remove(...classes);
     }
   
-    const initialRef: any = null;
-    const nodeRef = React.useRef(initialRef);
+    const nodeRef = React.useRef(null);
     //const nodeRef = React.useRef<HTMLElement | null>(null);
     const Component = tag;
   
@@ -121,13 +132,9 @@ function CSSTransition({
 }
 
 // Definimos las props de Transition
-interface TransitionProps {
-    show: boolean;
-    appear?: boolean;
-    [key: string]: any; // Para manejar props adicionales como rest
-}
 
-function Transition({ show, appear, ...rest }: TransitionProps) {
+
+function Transition({ show, appear, children, ...rest }) {
     const { parent } = React.useContext(TransitionContext);
     const isInitialRender = useIsInitialRender();
     const isChild = show === undefined;
@@ -138,7 +145,9 @@ function Transition({ show, appear, ...rest }: TransitionProps) {
                 appear={parent.appear || !parent.isInitialRender}
                 show={parent.show}
                 {...rest}
-            />
+            >
+              {children}
+            </CSSTransition>
         )
     }
 
@@ -152,7 +161,9 @@ function Transition({ show, appear, ...rest }: TransitionProps) {
                 },
             }}
         >
-            <CSSTransition appear={appear} show={show} {...rest} />
+            <CSSTransition appear={appear} show={show} {...rest} >
+              {children}
+            </CSSTransition>
         </TransitionContext.Provider>
     );
 }

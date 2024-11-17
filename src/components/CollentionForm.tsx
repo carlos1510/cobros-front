@@ -15,9 +15,9 @@ function CollentionForm({ titleForm, onSubmit, formDataParams, onClick }) {
 
     function onChange(date, dateString) {
         //setDate(date);
+        console.log(date);
         setStartDate(dateString);
         setFormData({...formData, payDate: dateString});
-        console.log(dateString);
     }
     // Maneja el cambio en los inputs
     const handleChange = (e) => {

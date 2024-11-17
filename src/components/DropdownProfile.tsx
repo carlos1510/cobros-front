@@ -7,10 +7,16 @@ import UserAvatar from '../images/users-default.png';
 
 type AlignOptions = 'left' | 'right' | 'center';
 
-function DropdownProfile({ align, name, rol }: { align: AlignOptions }) {
+interface DropdownProfileProps {
+    align: AlignOptions;
+    name: string;
+    rol: string;
+  }
+
+function DropdownProfile({ align, name, rol }: DropdownProfileProps) {
     const [dropdownOpen, setDropdownOpen] = React.useState(false);
 
-    const initialRef: any = null;
+    const initialRef = null;
     const trigger = React.useRef(initialRef);
     const dropdown = React.useRef(initialRef);
 
