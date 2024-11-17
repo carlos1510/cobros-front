@@ -43,7 +43,7 @@ function Loan() {
     function onChange(date, dateString) {
         //setDate(date);
         setStartDate(dateString);
-        console.log(dateString);
+        console.log(date);
     }
 
     // Maneja el envío de datos del primer formulario
