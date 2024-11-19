@@ -1,6 +1,6 @@
 import { jwtDecode } from "jwt-decode";
 //import { tokenKey, userName, rol } from "./constants";
-import Cookies from 'js-cookie';
+//import Cookies from 'js-cookie';
 import axios from "axios";
 
 interface UserTokenData {
@@ -33,8 +33,10 @@ const userTokenData: UserTokenData = {
     }
 }
 
-const savedToken = Cookies.get('access_token')?jwtDecode(Cookies.get('access_token')):userTokenData;
-const savedRefreshToken = Cookies.get('refresh_token')?jwtDecode(Cookies.get('refresh_token')):userTokenData;
+//const savedToken = Cookies.get('access_token')?jwtDecode(Cookies.get('access_token')):userTokenData;
+//const savedRefreshToken = Cookies.get('refresh_token')?jwtDecode(Cookies.get('refresh_token')):userTokenData;
+const savedToken = window.localStorage.getItem('cobros_access_token')?jwtDecode(window.localStorage.getItem('cobros_access_token')):userTokenData;
+const savedRefreshToken = window.localStorage.getItem('cobros_refresh_token')?jwtDecode(window.localStorage.getItem('cobros_refresh_token')):userTokenData;
 
 export const authProvider = {
     token: savedToken,
@@ -57,14 +59,27 @@ export const authProvider = {
             
             if(response.data.ok === true) {
                 authProvider.isAuthenticated = true;
-                authProvider.token = Cookies.get('access_token')?jwtDecode(Cookies.get('access_token')):userTokenData;
-                authProvider.refresh = Cookies.get('refresh_token')?jwtDecode(Cookies.get('refresh_token')):userTokenData;
+                //authProvider.token = Cookies.get('access_token')?jwtDecode(Cookies.get('access_token')):userTokenData;
+                //authProvider.refresh = Cookies.get('refresh_token')?jwtDecode(Cookies.get('refresh_token')):userTokenData;
                 //authProvider.token = response.data.token;
+                authProvider.token = jwtDecode(response.data.token);
+                authProvider.refresh = jwtDecode(response.data.refresh);
+
+                window.localStorage.setItem('cobros_access_token', response.data.token);
+                window.localStorage.setItem('cobros_refresh_token', response.data.refresh);
             }
         } catch (error) {
             console.error("Error during login:", error); // Manejo de errores
             throw error; // Propaga el error para manejarlo en el lugar de la llamada
         }
+    },
+    async logout(){
+        window.localStorage.removeItem('cobros_access_token');
+        window.localStorage.removeItem('cobros_refresh_token');
+
+        authProvider.isAuthenticated = false;
+        authProvider.token = null;
+        authProvider.refresh = null;
     }
 }
 //const savedToken = document.cookie;
