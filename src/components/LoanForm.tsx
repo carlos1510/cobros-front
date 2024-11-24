@@ -50,8 +50,8 @@ function LoanForm({ titleForm, onSubmit, formDataParams, services, onClick }) {
     }
 
     function onChangeEnd(date, dateString) {
-        console.log(date);
         setFormData({...formData, endDate: dateString});
+        console.log(date);
     }
 
     // Maneja el cambio en los inputs

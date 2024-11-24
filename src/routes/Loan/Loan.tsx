@@ -107,16 +107,11 @@ function Loan() {
                 (!isRegister && !isEdit) && (
                     <div className="p-4">
                         <div className="sm:flex sm:justify-between sm:items-center mb-8">
-
-                            {/* Left: Title */}
                             <div className="mb-4 sm:mb-0">
                                 <h1 className="text-2xl md:text-3xl text-teal-700 dark:text-gray-100 font-bold">Prestamos</h1>
                             </div>
 
-                            {/* Right: Actions */}
                             <div className="grid grid-flow-col sm:auto-cols-max justify-start sm:justify-end gap-8">
-                            
-                                {/* Add view button */}
                                 <button className="btn bg-gray-900  text-gray-100 px-2 py-2 rounded-md hover:bg-teal-600 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white" 
                                     onClick={() => setIsRegister(true)}>
                                     <span className="max-xs:sr-only flex items-center"> <FaPlus className="pr-1"/> Nuevo</span>
@@ -124,9 +119,7 @@ function Loan() {
                             </div>
                         </div>
                         <div className="grid grid-flow-col sm:auto-cols-max justify-start sm:justify-end gap-2">
-                        {/* Datepicker built with flatpickr */}
                             <div className="relative">
-                           
                                 <DatePicker className="appearance-none block w-full border border-gray-400 rounded-md py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" 
                                     format={dateFormat} 
                                     defaultValue={dayjs(startDate, dateFormat)}
@@ -135,14 +128,14 @@ function Loan() {
                                     onChange={onChange}
                                 />
                             </div>
-                            {/* Add view button */}
+                            
                             <button className="btn bg-gray-900 w-10 text-center text-gray-100 hover:bg-gray-800 rounded-md dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white"
                                 onClick={handleCreditList}
                             >
                                 <FaSearch className="m-3" />
                             </button>                
                         </div>
-                        {/* Card (Users) */}
+                        
                         <TableLoan data={loans} onClick={() => setIsEdit(true)} />
                     </div>
                 )
