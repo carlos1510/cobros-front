@@ -22,10 +22,8 @@ function LoanForm({ titleForm, onSubmit, formDataParams, services, onClick }) {
         console.log(date);
         setStartDate(dateString);
         setFormData({...formData, creditDate: dateString});
-        console.log('Total amount');   
 
         if (serviceIdRef.current.value){
-            console.log('Total amount');   
             if(serviceIdRef.current.value !== '0'){
                 const [service] = services.filter(item => parseInt(item.id) === parseInt(serviceIdRef.current?.value));
                 const fechaArray = startDate.split("/");
@@ -42,8 +40,7 @@ function LoanForm({ titleForm, onSubmit, formDataParams, services, onClick }) {
                     fecha.setDate(fecha.getDate() + 1);
                     fechagenerado = ('0'+fecha.getDate()).toString().substr(-2)+'/'+('0'+(fecha.getMonth()+1)).toString().substr(-2)+'/'+fecha.getFullYear();
                 }
-                console.log('Total amount');   
-
+                console.log('en estardate', fechagenerado);
                 setEndDate(dayjs(fechagenerado, dateFormat));
 
                 setFormData({...formData, creditDate: startDate, endDate: fechagenerado, serviceId: serviceIdRef.current.value});
@@ -87,8 +84,7 @@ function LoanForm({ titleForm, onSubmit, formDataParams, services, onClick }) {
         }
     };
 
-    const amountTotal = () => {  
-        console.log('Total amount');      
+    const amountTotal = () => {   
         if(serviceIdRef.current.value){
             const [service] = services.filter(item => parseInt(item.id) === parseInt(serviceIdRef.current?.value));
             
@@ -96,7 +92,6 @@ function LoanForm({ titleForm, onSubmit, formDataParams, services, onClick }) {
             const parsedAmount = parseFloat(formData.amount);
 
             if (!isNaN(parsedPercentage) && !isNaN(parsedAmount)) {
-                console.log('Total amount');   
                 const fechaArray = startDate.split("/");
                 const fecha = new Date(fechaArray[2]+"-"+fechaArray[1]+"-"+fechaArray[0]);
                 let fechagenerado = "";
@@ -112,7 +107,10 @@ function LoanForm({ titleForm, onSubmit, formDataParams, services, onClick }) {
                     fechagenerado = ('0'+fecha.getDate()).toString().substr(-2)+'/'+('0'+(fecha.getMonth()+1)).toString().substr(-2)+'/'+fecha.getFullYear();
                 }
 
+                console.log('fechagenerado', fechagenerado);
+
                 setEndDate(dayjs(fechagenerado, dateFormat));
+                console.log('end date', endDate);
 
                 const result = (parsedPercentage / 100) * parsedAmount;
                 const montoTotal = parsedAmount + result;
