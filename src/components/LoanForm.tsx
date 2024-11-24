@@ -22,8 +22,10 @@ function LoanForm({ titleForm, onSubmit, formDataParams, services, onClick }) {
         console.log(date);
         setStartDate(dateString);
         setFormData({...formData, creditDate: dateString});
+        console.log('Total amount');   
 
         if (serviceIdRef.current.value){
+            console.log('Total amount');   
             if(serviceIdRef.current.value !== '0'){
                 const [service] = services.filter(item => parseInt(item.id) === parseInt(serviceIdRef.current?.value));
                 const fechaArray = startDate.split("/");
@@ -40,6 +42,7 @@ function LoanForm({ titleForm, onSubmit, formDataParams, services, onClick }) {
                     fecha.setDate(fecha.getDate() + 1);
                     fechagenerado = ('0'+fecha.getDate()).toString().substr(-2)+'/'+('0'+(fecha.getMonth()+1)).toString().substr(-2)+'/'+fecha.getFullYear();
                 }
+                console.log('Total amount');   
 
                 setEndDate(dayjs(fechagenerado, dateFormat));
 
@@ -84,7 +87,8 @@ function LoanForm({ titleForm, onSubmit, formDataParams, services, onClick }) {
         }
     };
 
-    const amountTotal = () => {        
+    const amountTotal = () => {  
+        console.log('Total amount');      
         if(serviceIdRef.current.value){
             const [service] = services.filter(item => parseInt(item.id) === parseInt(serviceIdRef.current?.value));
             
@@ -92,6 +96,7 @@ function LoanForm({ titleForm, onSubmit, formDataParams, services, onClick }) {
             const parsedAmount = parseFloat(formData.amount);
 
             if (!isNaN(parsedPercentage) && !isNaN(parsedAmount)) {
+                console.log('Total amount');   
                 const fechaArray = startDate.split("/");
                 const fecha = new Date(fechaArray[2]+"-"+fechaArray[1]+"-"+fechaArray[0]);
                 let fechagenerado = "";
@@ -213,7 +218,7 @@ function LoanForm({ titleForm, onSubmit, formDataParams, services, onClick }) {
                                     ref={serviceIdRef}
                                     className="w-full rounded-md py-3" 
                                     value={formData.serviceId}
-                                    onChange={(event) => { handleChange(event); amountTotal();}}
+                                    onChange={(event) => { handleChange(event); amountTotal(); /* aqui */}}
                                 >
                                     <option value="">Seleccione</option>
                                     {
@@ -248,7 +253,7 @@ function LoanForm({ titleForm, onSubmit, formDataParams, services, onClick }) {
                                     name='amount' 
                                     value={formData.amount}
                                     onChange={handleChange}
-                                    onKeyUp={amountTotal}
+                                    onKeyUp={ amountTotal }
                                 />
                             </div>
                         </div>
@@ -264,7 +269,7 @@ function LoanForm({ titleForm, onSubmit, formDataParams, services, onClick }) {
                                     name='interestAmount' 
                                     value={formData.interestAmount}
                                     onChange={handleChange}
-                                    readOnly
+                                    readOnly 
                                 />
                             </div>
                             <div className="w-full md:w-1/3 px-3">
@@ -278,7 +283,7 @@ function LoanForm({ titleForm, onSubmit, formDataParams, services, onClick }) {
                                     name='totalAmount' 
                                     value={formData.totalAmount}
                                     onChange={handleChange}
-                                    readOnly
+                                    readOnly 
                                 />
                             </div>
                             <div className="w-full md:w-1/3 px-3">

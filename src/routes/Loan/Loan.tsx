@@ -42,6 +42,7 @@ function Loan() {
         handleCreditList();
         getServices();
         if ('user' in authProvider.token && authProvider.token.user) {
+            console.log("User");
             setFormData({...initialValues, userId: authProvider.token.user.id});
         }
     }, []);
