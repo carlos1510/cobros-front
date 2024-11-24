@@ -30,12 +30,15 @@ function LoanForm({ titleForm, onSubmit, formDataParams, services, onClick }) {
                 const fecha = new Date(fechaArray[2]+"-"+fechaArray[1]+"-"+fechaArray[0]);
                 let fechagenerado = "";
                 if(service.period === 'DIAS'){
+                    console.log('en dias');
                     fecha.setDate(fecha.getDate() + parseInt(service.numberPeriod));
                     fechagenerado = ('0'+fecha.getDate()).toString().substr(-2)+'/'+('0'+(fecha.getMonth()+1)).toString().substr(-2)+'/'+fecha.getFullYear();
                 }else if(service.period === 'SEMANAS'){
+                    console.log('en semanas');
                     fecha.setDate(fecha.getDate() + (parseInt(service.numberPeriod) * 7));
                     fechagenerado = ('0'+fecha.getDate()).toString().substr(-2)+'/'+('0'+(fecha.getMonth()+1)).toString().substr(-2)+'/'+fecha.getFullYear();
                 }else if(service.period === 'MES'){
+                    console.log('en mes');
                     fecha.setMonth(fecha.getMonth() + parseInt(service.numberPeriod));
                     fecha.setDate(fecha.getDate() + 1);
                     fechagenerado = ('0'+fecha.getDate()).toString().substr(-2)+'/'+('0'+(fecha.getMonth()+1)).toString().substr(-2)+'/'+fecha.getFullYear();
