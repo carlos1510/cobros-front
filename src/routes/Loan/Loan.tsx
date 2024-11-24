@@ -7,6 +7,7 @@ import Swal from 'sweetalert2';
 import { DatePicker } from 'antd';
 import dayjs from 'dayjs';
 import { formatoFecha } from '../../utils/FormDate';
+import { authProvider } from '../../auth';
 
 const initialValues = {
     id: 0,
@@ -22,7 +23,7 @@ const initialValues = {
     totalAmount: 0,
     serviceId: 0,
     clientId: 0,
-    userId: 2
+    userId: 0
 };
 
 function Loan() {
@@ -30,6 +31,7 @@ function Loan() {
     const [isEdit, setIsEdit] = React.useState(false);
     const [loans, setLoans] = React.useState([]);
     const [formData, setFormData] = React.useState(initialValues);
+    const [servicios, setServicios] = React.useState([]);
 
     const dateFormat = 'DD/MM/YYYY';
     const date = new Date();
@@ -38,10 +40,13 @@ function Loan() {
 
     React.useEffect(() => {
         handleCreditList();
+        getServices();
+        if ('user' in authProvider.token && authProvider.token.user) {
+            setFormData({...initialValues, userId: authProvider.token.user.id});
+        }
     }, []);
 
     function onChange(date, dateString) {
-        //setDate(date);
         setStartDate(dateString);
         console.log(date);
     }
@@ -88,6 +93,14 @@ function Loan() {
         const response = await axios.get(`${process.env.PUBLIC_URL}/credits/date/${formatoFecha(startDate)}`);
         setLoans(response.data.data);
     };
+
+    const getServices = async () => {
+        const response = await axios.get(`${process.env.PUBLIC_URL}/services`);
+
+        if(response.data.ok === true) {
+            setServicios(response.data.data);
+        }
+    }
     return (
         <>
             {
@@ -137,13 +150,13 @@ function Loan() {
 
             {
                 (isRegister && !isEdit) && (
-                    <LoanForm titleForm={"Registrar"} onSubmit={handleForm1Submit} formDataParams={formData} onClick={() => setIsRegister(false)} />
+                    <LoanForm titleForm={"Registrar"} onSubmit={handleForm1Submit} formDataParams={formData} services={servicios} onClick={() => setIsRegister(false)} />
                 )
             }
 
             {
                 (!isRegister && isEdit) && (
-                    <LoanForm titleForm={"Editar"} onSubmit={handleForm1Submit} formDataParams={formData} onClick={() => setIsEdit(false)} />
+                    <LoanForm titleForm={"Editar"} onSubmit={handleForm1Submit} formDataParams={formData} services={servicios} onClick={() => setIsEdit(false)} />
                 )
             }
         </>
