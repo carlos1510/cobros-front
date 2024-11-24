@@ -1,5 +1,3 @@
-//import './main.js'
-
 import * as React from 'react';
 import { Outlet, redirect, useLoaderData, useLocation } from 'react-router-dom';
 import Header from '../../partials/Header';
@@ -43,12 +41,6 @@ export function loader({ request}) {
     console.error("Token does not have user data.");
   }
 
-  //const username: string = authProvider.token.user.userName;
-  //const namefull = authProvider.token.user.fullName;
-  //const name = namefull ? namefull.split(" ")[0]:"";
-  //const rol: string = authProvider.token.user.role;
-
-  //return {username, namefull, name, rol};
   return { name, rol};
 }
 
