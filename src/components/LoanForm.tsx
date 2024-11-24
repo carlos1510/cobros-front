@@ -92,6 +92,7 @@ function LoanForm({ titleForm, onSubmit, formDataParams, services, onClick }) {
             const parsedAmount = parseFloat(formData.amount);
 
             if (!isNaN(parsedPercentage) && !isNaN(parsedAmount)) {
+                console.log('fecha inicial', startDate);
                 const fechaArray = startDate.split("/");
                 const fecha = new Date(fechaArray[2]+"-"+fechaArray[1]+"-"+fechaArray[0]);
                 let fechagenerado = "";
