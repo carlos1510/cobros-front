@@ -5,53 +5,32 @@ import dayjs from 'dayjs';
 import moment from 'moment';
 import axios from 'axios';
 
-function LoanForm({ titleForm, onSubmit, formDataParams, services, onClick }) {
+function LoanForm({ titleForm, onSubmit, formDataParams, onClick }) {
     const dateFormat = 'DD/MM/YYYY';
-    const serviceIdRef = React.useRef<HTMLSelectElement>(null);
     const date = new Date();
         // Crear la fecha mínima a partir del objeto Date (formato nativo)
     const [startDate, setStartDate] = React.useState(`${date.getDate().toString().padStart(2, '0')}/${(date.getMonth()+1).toString().padStart(2,'0')}/${date.getFullYear()}`);
-    const [endDate, setEndDate] = React.useState(null);
     const [formData, setFormData] = React.useState({...formDataParams, creditDate: startDate});
+    //setFormData({...formDataParams, creditDate: startDate});
 
     const disabledDate = (current) => {
         return current && current < moment(startDate,'DD/MM/YYYY').startOf('day');  // Comparar con el startDate como objeto Date
     };
 
     function onChangeStart(date, dateString) {
+        //setDate(date);
         console.log(date);
         setStartDate(dateString);
         setFormData({...formData, creditDate: dateString});
-
-        if (serviceIdRef.current.value){
-            if(serviceIdRef.current.value !== '0'){
-                const [service] = services.filter(item => parseInt(item.id) === parseInt(serviceIdRef.current?.value));
-                const fechaArray = startDate.split("/");
-                const fecha = new Date(fechaArray[2]+"-"+fechaArray[1]+"-"+fechaArray[0]);
-                let fechagenerado = "";
-                if(service.period === 'DIAS'){
-                    fecha.setDate(fecha.getDate() + parseInt(service.numberPeriod));
-                    fechagenerado = ('0'+fecha.getDate()).toString().substr(-2)+'/'+('0'+(fecha.getMonth()+1)).toString().substr(-2)+'/'+fecha.getFullYear();
-                }else if(service.period === 'SEMANAS'){
-                    fecha.setDate(fecha.getDate() + (parseInt(service.numberPeriod) * 7));
-                    fechagenerado = ('0'+fecha.getDate()).toString().substr(-2)+'/'+('0'+(fecha.getMonth()+1)).toString().substr(-2)+'/'+fecha.getFullYear();
-                }else if(service.period === 'MES'){
-                    fecha.setMonth(fecha.getMonth() + parseInt(service.numberPeriod));
-                    fecha.setDate(fecha.getDate() + 1);
-                    fechagenerado = ('0'+fecha.getDate()).toString().substr(-2)+'/'+('0'+(fecha.getMonth()+1)).toString().substr(-2)+'/'+fecha.getFullYear();
-                }
-
-                setEndDate(dayjs(fechagenerado, dateFormat));
-
-                setFormData({...formData, creditDate: startDate, endDate: fechagenerado, serviceId: serviceIdRef.current.value});
-            }
-            
-        }
+        console.log(dateString);
     }
 
     function onChangeEnd(date, dateString) {
+        //setDate(date);
+        //setStartDate(dateString);
         console.log(date);
         setFormData({...formData, endDate: dateString});
+        console.log(dateString);
     }
 
     // Maneja el cambio en los inputs
@@ -83,43 +62,6 @@ function LoanForm({ titleForm, onSubmit, formDataParams, services, onClick }) {
           console.error('Error fetching data:', error);
         }
     };
-
-    const amountTotal = () => {        
-        if(serviceIdRef.current.value){
-            const [service] = services.filter(item => parseInt(item.id) === parseInt(serviceIdRef.current?.value));
-            
-            const parsedPercentage = parseFloat(service.porcentage);
-            const parsedAmount = parseFloat(formData.amount);
-
-            if (!isNaN(parsedPercentage) && !isNaN(parsedAmount)) {
-                const fechaArray = startDate.split("/");
-                const fecha = new Date(fechaArray[2]+"-"+fechaArray[1]+"-"+fechaArray[0]);
-                let fechagenerado = "";
-                if(service.period === 'DIAS'){
-                    fecha.setDate(fecha.getDate() + parseInt(service.numberPeriod));
-                    fechagenerado = ('0'+fecha.getDate()).toString().substr(-2)+'/'+('0'+(fecha.getMonth()+1)).toString().substr(-2)+'/'+fecha.getFullYear();
-                }else if(service.period === 'SEMANAS'){
-                    fecha.setDate(fecha.getDate() + (parseInt(service.numberPeriod) * 7));
-                    fechagenerado = ('0'+fecha.getDate()).toString().substr(-2)+'/'+('0'+(fecha.getMonth()+1)).toString().substr(-2)+'/'+fecha.getFullYear();
-                }else if(service.period === 'MES'){
-                    fecha.setMonth(fecha.getMonth() + parseInt(service.numberPeriod));
-                    fecha.setDate(fecha.getDate() + 1);
-                    fechagenerado = ('0'+fecha.getDate()).toString().substr(-2)+'/'+('0'+(fecha.getMonth()+1)).toString().substr(-2)+'/'+fecha.getFullYear();
-                }
-
-                setEndDate(dayjs(fechagenerado, dateFormat));
-
-                const result = (parsedPercentage / 100) * parsedAmount;
-                const montoTotal = parsedAmount + result;
-                setFormData({...formData, interestAmount: result.toFixed(2), totalAmount: montoTotal.toFixed(2), creditDate: startDate, endDate: fechagenerado, serviceId: serviceIdRef.current.value}); // Actualiza el estado con el monto total calculado
-            } else {
-                setFormData({...formData, interestAmount: 0, totalAmount: 0});
-            }
-        }else {
-            setFormData({...formData, interestAmount: 0, totalAmount: 0});
-            console.log("no hay servicio");
-        }
-    }
 
     return (
         <div className="p-4">
@@ -209,19 +151,14 @@ function LoanForm({ titleForm, onSubmit, formDataParams, services, onClick }) {
                                 <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="serviceIdTxt">
                                     Tipo de Servicio
                                 </label>
-                                <select name="serviceId" id="serviceIdTxt" 
-                                    ref={serviceIdRef}
-                                    className="w-full rounded-md py-3" 
+                                <select name="serviceId" id="serviceIdTxt" className="w-full rounded-md py-3" 
                                     value={formData.serviceId}
-                                    onChange={(event) => { handleChange(event); amountTotal();}}
+                                    onChange={handleChange}
                                 >
                                     <option value="">Seleccione</option>
-                                    {
-                                        services?.map((servicio) => (
-                                            <option key={servicio.id} value={servicio.id}>{servicio.serviceName}</option>
-                                        ))
-                                    }
-                                    
+                                    <option value="2">Prestamo Semanal</option>
+                                    <option value="3">Prestamo Diario</option>
+                                    <option value="4">Prestamo Mensual</option>
                                 </select>
                             </div>
                             <div className="w-full md:w-1/3 px-3">
@@ -248,7 +185,6 @@ function LoanForm({ titleForm, onSubmit, formDataParams, services, onClick }) {
                                     name='amount' 
                                     value={formData.amount}
                                     onChange={handleChange}
-                                    onKeyUp={amountTotal}
                                 />
                             </div>
                         </div>
@@ -264,7 +200,6 @@ function LoanForm({ titleForm, onSubmit, formDataParams, services, onClick }) {
                                     name='interestAmount' 
                                     value={formData.interestAmount}
                                     onChange={handleChange}
-                                    readOnly
                                 />
                             </div>
                             <div className="w-full md:w-1/3 px-3">
@@ -278,7 +213,6 @@ function LoanForm({ titleForm, onSubmit, formDataParams, services, onClick }) {
                                     name='totalAmount' 
                                     value={formData.totalAmount}
                                     onChange={handleChange}
-                                    readOnly
                                 />
                             </div>
                             <div className="w-full md:w-1/3 px-3">
@@ -290,7 +224,6 @@ function LoanForm({ titleForm, onSubmit, formDataParams, services, onClick }) {
                                     name='endDate'
                                     onChange={onChangeEnd}
                                     disabledDate={disabledDate}
-                                    value={endDate}
                                     inputReadOnly={true}
                                     id="endDateTxt"
                                 />
