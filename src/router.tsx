@@ -8,7 +8,7 @@ import Loan from "./routes/Loan";
 import Collention from "./routes/Collention";
 import User from "./routes/User";
 
-// const baseruta = '/cobros';
+const baseruta = '/cobros';
 
 export const router = createBrowserRouter(
     [
@@ -45,5 +45,4 @@ export const router = createBrowserRouter(
     // Add more routes here...
  
 ], 
-// {basename: baseruta}
-);
+{basename: baseruta});
