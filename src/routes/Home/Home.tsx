@@ -13,15 +13,7 @@ export function loader({ request}) {
     return redirect("/login?" + params.toString());
   }
 
-  console.log("auth provider", authProvider);
-  console.log("fecha actual", new Date());
-  console.log("token expired", authProvider.token.exp);
-  console.log("token expired time", new Date(authProvider.token.exp).getTime());
-
   const tokenExpiration = new Date(authProvider.token.exp).getTime() - new Date().getTime();
-
-  console.log("tiempo actual", new Date().getTime())
-  console.log(tokenExpiration);
 
   if(tokenExpiration < 1){
     const params = new URLSearchParams();
@@ -38,7 +30,7 @@ export function loader({ request}) {
     rol = authProvider.token.user.role;
   } else {
     // Handle cases where `authProvider.token` does not have `user`
-    console.error("Token does not have user data.");
+    //console.error("Token does not have user data.");
   }
 
   return { name, rol};
