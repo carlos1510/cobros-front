@@ -9,7 +9,6 @@ import Collention from "./routes/Collention";
 import User from "./routes/User";
 import Dashboard from "./routes/Dashboard/Dashboard";
 import Service from "./routes/Service/Service";
-import { action as logoutAction } from "./routes/Logout/logout";
 
 const baseruta = '/cobros';
 
@@ -52,10 +51,6 @@ export const router = createBrowserRouter(
             path: "/login",
             element: <App />,
             action: loginAction,
-        },
-        {
-            path: "/logout",
-            action: logoutAction,
         },
     // Add more routes here...
  
