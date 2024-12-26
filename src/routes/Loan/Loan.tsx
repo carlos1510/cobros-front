@@ -32,6 +32,7 @@ function Loan() {
     const [loans, setLoans] = React.useState([]);
     const [formData, setFormData] = React.useState(initialValues);
     const [servicios, setServicios] = React.useState([]);
+    const [userId, setUserId] = React.useState(0);
 
     const dateFormat = 'DD/MM/YYYY';
     const date = new Date();
@@ -40,10 +41,10 @@ function Loan() {
 
     React.useEffect(() => {
         handleCreditList();
-        getServices();
         if ('user' in authProvider.token && authProvider.token.user) {
-            console.log("User");
+            setUserId(authProvider.token.user.id);
             setFormData({...initialValues, userId: authProvider.token.user.id});
+            getServices(authProvider.token.user.id);
         }
     }, []);
 
@@ -54,19 +55,22 @@ function Loan() {
 
     // Maneja el envío de datos del primer formulario
     const handleForm1Submit = async (formData) => {
-        console.log("Datos del primer formulario:", formData);
-        
         try {
-            const response = await axios.post(`${process.env.PUBLIC_URL}/credits/save`, formData);
+            let response = null;
+            if (isEdit) {
+                response = await axios.put(`${process.env.PUBLIC_URL}/credits/update/${formData.id}`, formData);
+            } else {
+                response = await axios.post(`${process.env.PUBLIC_URL}/credits/save`, formData);
+            }
 
             if (response.data.ok){
-                setFormData(initialValues);
+                setFormData({...initialValues, userId: userId});
                 setIsRegister(false);
                 setIsEdit(false);
                 Swal.fire({
                     icon: 'success',
                     title: 'Exito!',
-                    html: `<p>Se <strong>Registro</strong> correctamente los daots</p>`,
+                    html: `<p>Se <strong>Registro</strong> correctamente los datos</p>`,
                     timer: 3000,
                     position: 'center'
                 });
@@ -95,8 +99,8 @@ function Loan() {
         setLoans(response.data.data);
     };
 
-    const getServices = async () => {
-        const response = await axios.get(`${process.env.PUBLIC_URL}/services`);
+    const getServices = async (user_id) => {
+        const response = await axios.get(`${process.env.PUBLIC_URL}/services/${user_id}`);
 
         if(response.data.ok === true) {
             setServicios(response.data.data);

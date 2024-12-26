@@ -7,6 +7,8 @@ import Client from "./routes/Client";
 import Loan from "./routes/Loan";
 import Collention from "./routes/Collention";
 import User from "./routes/User";
+import Dashboard from "./routes/Dashboard/Dashboard";
+import Service from "./routes/Service/Service";
 
 const baseruta = '/cobros';
 
@@ -24,12 +26,20 @@ export const router = createBrowserRouter(
                     element: <Client />
                 },
                 {
+                    path: "dashboard",
+                    element: <Dashboard />
+                },
+                {
                     path: "loans",
                     element: <Loan />
                 },
                 {
                     path: "collentions",
                     element: <Collention />
+                },
+                {
+                    path: "services",
+                    element: <Service />
                 },
                 {
                     path: "users",
@@ -45,4 +55,5 @@ export const router = createBrowserRouter(
     // Add more routes here...
  
 ], 
-{basename: baseruta});
+{basename: baseruta}
+);

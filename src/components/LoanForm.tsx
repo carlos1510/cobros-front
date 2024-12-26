@@ -30,20 +30,16 @@ function LoanForm({ titleForm, onSubmit, formDataParams, services, onClick }) {
                 const fecha = new Date(fechaArray[2]+"-"+fechaArray[1]+"-"+fechaArray[0]);
                 let fechagenerado = "";
                 if(service.period === 'DIAS'){
-                    console.log('en dias');
                     fecha.setDate(fecha.getDate() + parseInt(service.numberPeriod));
                     fechagenerado = ('0'+fecha.getDate()).toString().substr(-2)+'/'+('0'+(fecha.getMonth()+1)).toString().substr(-2)+'/'+fecha.getFullYear();
                 }else if(service.period === 'SEMANAS'){
-                    console.log('en semanas');
                     fecha.setDate(fecha.getDate() + (parseInt(service.numberPeriod) * 7));
                     fechagenerado = ('0'+fecha.getDate()).toString().substr(-2)+'/'+('0'+(fecha.getMonth()+1)).toString().substr(-2)+'/'+fecha.getFullYear();
                 }else if(service.period === 'MES'){
-                    console.log('en mes');
                     fecha.setMonth(fecha.getMonth() + parseInt(service.numberPeriod));
                     fecha.setDate(fecha.getDate() + 1);
                     fechagenerado = ('0'+fecha.getDate()).toString().substr(-2)+'/'+('0'+(fecha.getMonth()+1)).toString().substr(-2)+'/'+fecha.getFullYear();
                 }
-                console.log('en estardate', fechagenerado);
                 setEndDate(dayjs(fechagenerado, dateFormat));
 
                 setFormData({...formData, creditDate: startDate, endDate: fechagenerado, serviceId: serviceIdRef.current.value});
@@ -95,7 +91,6 @@ function LoanForm({ titleForm, onSubmit, formDataParams, services, onClick }) {
             const parsedAmount = parseFloat(formData.amount);
 
             if (!isNaN(parsedPercentage) && !isNaN(parsedAmount)) {
-                console.log('fecha inicial', startDate);
                 const fechaArray = startDate.split("/");
                 const fecha = new Date(fechaArray[2]+"-"+fechaArray[1]+"-"+fechaArray[0]);
                 let fechagenerado = "";
@@ -111,10 +106,7 @@ function LoanForm({ titleForm, onSubmit, formDataParams, services, onClick }) {
                     fechagenerado = ('0'+fecha.getDate()).toString().substr(-2)+'/'+('0'+(fecha.getMonth()+1)).toString().substr(-2)+'/'+fecha.getFullYear();
                 }
 
-                console.log('fechagenerado', fechagenerado);
-
                 setEndDate(dayjs(fechagenerado, dateFormat));
-                console.log('end date', endDate);
 
                 const result = (parsedPercentage / 100) * parsedAmount;
                 const montoTotal = parsedAmount + result;
@@ -124,7 +116,6 @@ function LoanForm({ titleForm, onSubmit, formDataParams, services, onClick }) {
             }
         }else {
             setFormData({...formData, interestAmount: 0, totalAmount: 0});
-            console.log("no hay servicio");
         }
     }
 
@@ -132,17 +123,18 @@ function LoanForm({ titleForm, onSubmit, formDataParams, services, onClick }) {
         <div className="p-4">
             <div className="col-span-full xl:col-span-6 bg-white dark:bg-gray-800 shadow-sm rounded-xl">
                 <header className="px-5 py-4 border-b border-gray-100 dark:border-gray-700/60">
-                    <h1 className="font-semibold text-gray-800 dark:text-gray-100">{titleForm} Credito</h1>
+                    <h1 className="text-2xl md:text-3xl text-teal-700 dark:text-gray-100 font-bold">{titleForm} Credito</h1>
                 </header>  
                 <div className="p-3">
                     <form className="w-full min-w-full" onSubmit={handleSubmit}>
                         <div className="flex flex-wrap -mx-3 mb-6">
                             <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="numberDocumentoTxt">
+                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 dark:text-gray-100" htmlFor="numberDocumentoTxt">
                                     Numero de Documento
                                 </label>
                                 <div className="flex">
-                                    <input type="number"  className="appearance-none w-full border-gray-400 rounded-bl-md rounded-tl-md py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" 
+                                    <input type="number"  className="appearance-none w-full border-gray-400 rounded-bl-md rounded-tl-md py-3 px-4 leading-tight 
+                                    focus:outline-none focus:bg-white focus:border-gray-500 dark:text-gray-800" 
                                         placeholder="" 
                                         id="numberDocumentoTxt"
                                         name='numberDocument'
@@ -157,10 +149,11 @@ function LoanForm({ titleForm, onSubmit, formDataParams, services, onClick }) {
                                 </div>
                             </div>
                             <div className="w-full md:w-2/3 px-3">
-                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="fullNameTxt">
+                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 dark:text-gray-100" htmlFor="fullNameTxt">
                                     Nombre Completo
                                 </label>
-                                <input className="appearance-none block w-full border border-gray-400 rounded-md py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" 
+                                <input className="appearance-none block w-full border border-gray-400 rounded-md py-3 px-4 leading-tight 
+                                    focus:outline-none focus:bg-white focus:border-gray-500 dark:text-gray-800" 
                                     id="fullNameTxt" 
                                     type="text" 
                                     name='fullName' 
@@ -171,10 +164,11 @@ function LoanForm({ titleForm, onSubmit, formDataParams, services, onClick }) {
                         </div>
                         <div className="flex flex-wrap -mx-3 mb-6">
                             <div className="w-full px-3">
-                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="grid-password" id='addressTxt'>
+                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 dark:text-gray-100" htmlFor="grid-password" id='addressTxt'>
                                     Dirección
                                 </label>
-                                <input className="appearance-none block w-full text-gray-700 border border-gray-400 rounded-md py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" 
+                                <input className="appearance-none block w-full text-gray-700 border border-gray-400 rounded-md py-3 px-4 mb-3 leading-tight 
+                                    focus:outline-none focus:bg-white focus:border-gray-500 dark:text-gray-800" 
                                     id="addressTxt" 
                                     type="text" 
                                     name='address'
@@ -185,10 +179,11 @@ function LoanForm({ titleForm, onSubmit, formDataParams, services, onClick }) {
                         </div>
                         <div className="flex flex-wrap -mx-3 mb-6">
                             <div className="w-full md:w-2/3 px-3 mb-6 md:mb-0">
-                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="referenceTxt">
+                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 dark:text-gray-100" htmlFor="referenceTxt">
                                     Referencia: 
                                 </label>
-                                <input className="appearance-none block w-full border border-gray-700 rounded-md py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" 
+                                <input className="appearance-none block w-full border border-gray-700 rounded-md py-3 px-4 mb-3 leading-tight 
+                                    focus:outline-none focus:bg-white focus:border-gray-500 dark:text-gray-800" 
                                     id="referenceTxt" 
                                     type="text" 
                                     name='reference'
@@ -197,10 +192,11 @@ function LoanForm({ titleForm, onSubmit, formDataParams, services, onClick }) {
                                 />
                             </div>
                             <div className="w-full md:w-1/3 px-3">
-                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="phoneTxt">
+                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 dark:text-gray-100" htmlFor="phoneTxt">
                                     Telefono
                                 </label>
-                                <input className="appearance-none block w-full border border-gray-400 rounded-md py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" 
+                                <input className="appearance-none block w-full border border-gray-400 rounded-md py-3 px-4 leading-tight 
+                                    focus:outline-none focus:bg-white focus:border-gray-500 dark:text-gray-800" 
                                     id="phoneTxt" 
                                     type="number" 
                                     placeholder="999 999 999"
@@ -213,12 +209,12 @@ function LoanForm({ titleForm, onSubmit, formDataParams, services, onClick }) {
                         
                         <div className="flex flex-wrap -mx-3 mb-6">
                             <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="serviceIdTxt">
+                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 dark:text-gray-100" htmlFor="serviceIdTxt">
                                     Tipo de Servicio
                                 </label>
                                 <select name="serviceId" id="serviceIdTxt" 
                                     ref={serviceIdRef}
-                                    className="w-full rounded-md py-3" 
+                                    className="w-full rounded-md py-3 dark:text-gray-800" 
                                     value={formData.serviceId}
                                     onChange={(event) => { handleChange(event); amountTotal(); /* aqui */}}
                                 >
@@ -232,10 +228,11 @@ function LoanForm({ titleForm, onSubmit, formDataParams, services, onClick }) {
                                 </select>
                             </div>
                             <div className="w-full md:w-1/3 px-3">
-                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="creditDateTxt">
+                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 dark:text-gray-100" htmlFor="creditDateTxt">
                                     Fecha
                                 </label>
-                                <DatePicker className="appearance-none block w-full border border-gray-400 rounded-md py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" 
+                                <DatePicker className="appearance-none block w-full border border-gray-400 rounded-md py-3 px-4 leading-tight 
+                                    focus:outline-none focus:bg-white focus:border-gray-500 dark:text-gray-800" 
                                     format={dateFormat} 
                                     defaultValue={dayjs(startDate, dateFormat)}
                                     name='creditDate'
@@ -245,10 +242,11 @@ function LoanForm({ titleForm, onSubmit, formDataParams, services, onClick }) {
                                 />
                             </div>
                             <div className="w-full md:w-1/3 px-3">
-                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="amountTxt">
+                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 dark:text-gray-100" htmlFor="amountTxt">
                                     Monto a Prestar
                                 </label>
-                                <input className="appearance-none block w-full border border-gray-400 rounded-md py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" 
+                                <input className="appearance-none block w-full border border-gray-400 rounded-md py-3 px-4 leading-tight 
+                                    focus:outline-none focus:bg-white focus:border-gray-500 dark:text-gray-800" 
                                     id="amountTxt" 
                                     type="number" 
                                     placeholder="0.00"
@@ -261,10 +259,11 @@ function LoanForm({ titleForm, onSubmit, formDataParams, services, onClick }) {
                         </div>
                         <div className="flex flex-wrap -mx-3 mb-6">
                             <div className="w-full md:w-1/3 px-3">
-                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="interestAmountTxt">
+                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 dark:text-gray-100" htmlFor="interestAmountTxt">
                                     Interés Calculado
                                 </label>
-                                <input className="appearance-none block w-full border border-gray-400 rounded-md py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" 
+                                <input className="appearance-none block w-full border border-gray-400 rounded-md py-3 px-4 leading-tight 
+                                    focus:outline-none focus:bg-white focus:border-gray-500 dark:text-gray-800" 
                                     id="interestAmountTxt" 
                                     type="number" 
                                     placeholder="0.00"
@@ -275,10 +274,11 @@ function LoanForm({ titleForm, onSubmit, formDataParams, services, onClick }) {
                                 />
                             </div>
                             <div className="w-full md:w-1/3 px-3">
-                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="totalAmountTxt">
+                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 dark:text-gray-100" htmlFor="totalAmountTxt">
                                     Monto Total
                                 </label>
-                                <input className="appearance-none block w-full border border-gray-400 rounded-md py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" 
+                                <input className="appearance-none block w-full border border-gray-400 rounded-md py-3 px-4 leading-tight 
+                                    focus:outline-none focus:bg-white focus:border-gray-500 dark:text-gray-800" 
                                     id="totalAmountTxt" 
                                     type="number" 
                                     placeholder="0.00"
@@ -289,10 +289,11 @@ function LoanForm({ titleForm, onSubmit, formDataParams, services, onClick }) {
                                 />
                             </div>
                             <div className="w-full md:w-1/3 px-3">
-                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="endDateTxt">
+                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 dark:text-gray-100" htmlFor="endDateTxt">
                                     Fecha Limite
                                 </label>
-                                <DatePicker className="appearance-none block w-full border border-gray-400 rounded-md py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" 
+                                <DatePicker className="appearance-none block w-full border border-gray-400 rounded-md py-3 px-4 leading-tight 
+                                    focus:outline-none focus:bg-white focus:border-gray-500 dark:text-gray-800" 
                                     format={dateFormat} 
                                     name='endDate'
                                     onChange={onChangeEnd}
@@ -308,7 +309,8 @@ function LoanForm({ titleForm, onSubmit, formDataParams, services, onClick }) {
                         <div className="md:flex md:items-center">
                             <div className="md:w-1/3"></div>
                             <div className="md:w-2/3">
-                                <button className="shadow bg-gray-800 hover:bg-teal-600 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" type="submit">
+                                <button className="shadow bg-gray-800 hover:bg-teal-600 focus:shadow-outline focus:outline-none 
+                                text-white font-bold py-2 px-4 rounded dark:bg-teal-600 dark:hover:bg-teal-400" type="submit">
                                     <span className="max-xs:sr-only flex items-center"> <FaSave className="pr-1"/> Guardar</span>
                                 </button>
 
