@@ -131,6 +131,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen, variant = 'default' }: SidebarPr
                                         pathname.includes("dashboard") ? "" : "hover:text-gray-900 dark:hover:text-white"
                                     }`}
                                 >
+                                    
                                     <div className="flex items-center">
                                         <svg className={`shrink-0 fill-current ${pathname.includes('dashboard') ? 'text-violet-500' : 'text-gray-400 dark:text-gray-500'}`} 
                                             xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512">
