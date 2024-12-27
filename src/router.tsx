@@ -54,6 +54,10 @@ export const router = createBrowserRouter(
             element: <App />,
             action: loginAction,
         },
+        {
+            path: "/logout",
+            action: logoutAction,
+        },
     // Add more routes here...
  
 ], 
