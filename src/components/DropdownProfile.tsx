@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Link } from "react-router-dom";
+import { Form, Link } from "react-router-dom";
 import Transition from '../utils/Transition';
 
 //import UserAvatar from '../images/user-avatar-32.png';
@@ -83,17 +83,15 @@ function DropdownProfile({ align, name, rol }: DropdownProfileProps) {
                             to="/profile"
                             onClick={() => setDropdownOpen(!dropdownOpen)} 
                         >
-                            <span className="mr-2"><i className="ri-user-line"></i></span>Perfil
+                            <span className="mr-2"><i className="ri-user-line"></i></span> Perfil
                         </Link>
                     </li>
                     <li>
-                        <Link 
-                            className="font-medium text-sm text-gray-500 hover:text-gray-600 dark:hover:text-gray-400 flex items-center py-1 px-3"   
-                            to="/signin"
-                            onClick={() => setDropdownOpen(!dropdownOpen)} 
-                        >
-                            <span className="text-red-600 mr-2"><i className="ri-logout-circle-line"></i></span> Salir
-                        </Link>
+                        <Form method="POST" action="/logout">
+                            <button type="submit" className="font-medium text-sm text-gray-500 hover:text-gray-600 dark:hover:text-gray-400 flex items-center py-1 px-3">
+                                <span className="text-red-600 mr-2"><i className="ri-logout-circle-line"></i></span> Salir 
+                            </button>
+                        </Form>
                     </li>
                 </ul>
             </Transition>
