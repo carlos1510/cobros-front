@@ -162,8 +162,8 @@ function LoanForm({ titleForm, onSubmit, formDataParams, services, onClick }) {
                                 />
                             </div>
                         </div>
-                        <div className="flex flex-wrap -mx-3 mb-6">
-                            <div className="w-full px-3">
+                        <div className="flex flex-wrap -mx-3 ">
+                            <div className="w-full px-3 mb-6">
                                 <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 dark:text-gray-100" htmlFor="grid-password" id='addressTxt'>
                                     Dirección
                                 </label>
@@ -227,7 +227,7 @@ function LoanForm({ titleForm, onSubmit, formDataParams, services, onClick }) {
                                     
                                 </select>
                             </div>
-                            <div className="w-full md:w-1/3 px-3">
+                            <div className="w-full md:w-1/3 px-3 mb-6">
                                 <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 dark:text-gray-100" htmlFor="creditDateTxt">
                                     Fecha
                                 </label>
@@ -258,7 +258,7 @@ function LoanForm({ titleForm, onSubmit, formDataParams, services, onClick }) {
                             </div>
                         </div>
                         <div className="flex flex-wrap -mx-3 mb-6">
-                            <div className="w-full md:w-1/3 px-3">
+                            <div className="w-full md:w-1/3 px-3 mb-6">
                                 <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 dark:text-gray-100" htmlFor="interestAmountTxt">
                                     Interés Calculado
                                 </label>
@@ -273,7 +273,7 @@ function LoanForm({ titleForm, onSubmit, formDataParams, services, onClick }) {
                                     readOnly 
                                 />
                             </div>
-                            <div className="w-full md:w-1/3 px-3">
+                            <div className="w-full md:w-1/3 px-3 mb-6">
                                 <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 dark:text-gray-100" htmlFor="totalAmountTxt">
                                     Monto Total
                                 </label>
@@ -288,7 +288,7 @@ function LoanForm({ titleForm, onSubmit, formDataParams, services, onClick }) {
                                     readOnly 
                                 />
                             </div>
-                            <div className="w-full md:w-1/3 px-3">
+                            <div className="w-full md:w-1/3 px-3 mb-6">
                                 <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 dark:text-gray-100" htmlFor="endDateTxt">
                                     Fecha Limite
                                 </label>

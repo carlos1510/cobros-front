@@ -4,10 +4,12 @@ import CollentionForm from '../../components/CollentionForm';
 
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import Modal from '../../components/common/Modal';
+import { authProvider } from '../../auth';
 
 const initialValues = {
     id: 0,
-    userId: 2,
+    userId: 0,
     creditId: 0,
     numberDocument: '',
     fullName: '',
@@ -23,9 +25,17 @@ function Client() {
     const [clients, setClients] = React.useState([]);
     const [selectedClient, setSelectedClient] = React.useState(null);
     const [formData, setFormData] = React.useState(initialValues);
+    const [isOpen, setIsOpen] = React.useState(false);
+    const [client, setClient] = React.useState(null);
+    const [userId, setUserId] = React.useState(0);
+    const [payments, setPayments] = React.useState([]);
 
     React.useEffect(() => {
         handleClientsList();
+        if ('user' in authProvider.token && authProvider.token.user) {
+            setUserId(authProvider.token.user.id);
+            setFormData({...initialValues, userId: authProvider.token.user.id});
+        }
     }, []);
 
     // Maneja el envío de datos del primer formulario
@@ -34,7 +44,8 @@ function Client() {
             const response = await axios.post(`${process.env.PUBLIC_URL}/fees/save`, formData);
             
             if (response.data.ok){
-                setFormData(initialValues);
+                //setFormData(initialValues);
+                setFormData({...initialValues, userId: userId});
                 setIsPago(false);
                 Swal.fire({
                     icon: 'success',
@@ -72,6 +83,21 @@ function Client() {
         setSelectedClient({...formData, creditId: client.id, numberDocument: client.numberDocument, fullName: client.fullName, 
             totalAmount: client.totalAmount, totalpago: client.totalpago, restantAmount: (client.totalAmount - client.totalpago)});
     };
+
+    const handleOpenModal = () => {
+        setIsOpen(true);
+    };
+
+    const handleCloseModal = () => {
+        setIsOpen(false);
+    };
+
+    const handleSelectClientByPayment = async (client) => {
+        setClient(client);
+        const response = await axios.get(`${process.env.PUBLIC_URL}/fees/${client.id}/findPayments`);
+        setPayments(response.data.data);
+        console.log(client);
+    }
 
 
     return (
@@ -126,7 +152,9 @@ function Client() {
                                                 <button className="bg-teal-600 hover:bg-teal-800 text-white py-1 px-2 mr-1" title="Cobrar" onClick={() => { setIsPago(true); handleClientSelect(client) }}>
                                                     <FaMoneyBillAlt  />
                                                 </button>
-                                                <button className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-1 px-2 mr-1" title="Ver Pagos">
+                                                <button className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-1 px-2 mr-1" 
+                                                    title="Ver Pagos"
+                                                    onClick={() => {handleOpenModal(); handleSelectClientByPayment(client)}} >
                                                     <FaListOl />
                                                 </button>
                                                 <button className="border border-teal-600 text-teal-600 dark:text-white font-bold py-1 px-2 mr-1" title="Estado de Pago">
@@ -155,7 +183,9 @@ function Client() {
                                         <button className="bg-teal-600 hover:bg-teal-800 text-white py-1 px-2 rounded" title="Cobrar" onClick={() => { setIsPago(true); handleClientSelect(client) }}>
                                             <FaMoneyBillAlt  />
                                         </button>
-                                        <button className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-1 px-2 rounded" title="Ver Pagos">
+                                        <button type='button' className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-1 px-2 rounded" title="Ver Pagos" 
+                                            onClick={() => {handleOpenModal(); handleSelectClientByPayment(client)}}
+                                        >
                                             <FaListOl />
                                         </button>
                                         <button className="border border-teal-600 text-teal-600 dark:text-white font-bold py-1 px-2 rounded" title="Estado de Pago">
@@ -165,6 +195,61 @@ function Client() {
                                 </div>
                             ))}
                         </div>
+                        <Modal isOpen={isOpen} onClose={handleCloseModal} title={`${client?.fullName} - Pagos`}>
+                            <div className="mb-4">
+                                <div className='flex flex-col md:flex-row md:justify-between mb-4'>
+                                    <h4 className='mb-2 md:mb-0'>Fecha Crédito: {client?.creditDate }</h4>
+                                    <h4 className='mb-2 md:mb-0'>Monto Prestado: <span className='text-xl font-bold'>S/. {client?.totalAmount }</span></h4>
+                                </div>
+                            </div>
+                            <div className="overflow-x-auto">
+                                <table className="table-auto w-full border-collapse border border-gray-400">
+                                    <thead className="text-xs font-semibold uppercase text-white bg-teal-600 dark:bg-gray-700 dark:bg-opacity-50">
+                                        <tr>
+                                            <th className="p-2 whitespace-nowrap">
+                                                <div className="font-semibold text-left">#</div>
+                                            </th>
+                                            <th className="p-2 whitespace-nowrap">
+                                                <div className="font-semibold text-left">Fecha de Pago</div>
+                                            </th>
+                                            <th className="p-2 whitespace-nowrap">
+                                                <div className="font-semibold text-left">Monto Pagado</div>
+                                            </th>
+                                            <th className="p-2 whitespace-nowrap">
+                                                <div className="font-semibold text-left">Restante</div>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody className="text-sm divide-y divide-gray-100 dark:divide-gray-700/60">
+                                        {
+                                            payments?.map((pay, index) => (
+                                                <tr key={index}>
+                                                    <td className="p-2 whitespace-nowrap">{index + 1}</td>
+                                                    <td className="p-2 whitespace-nowrap">{pay.payDate}</td>
+                                                    <td className="p-2 whitespace-nowrap">{pay.amount}</td>
+                                                    <td className="p-2 whitespace-nowrap">{pay.remainingAmount}</td>
+                                                </tr>
+                                            ))
+                                        }
+                                    </tbody>
+                                    <tfoot className="text-sm font-semibold text-gray-700 bg-gray-200 dark:bg-gray-800 dark:text-gray-300">
+                                        <tr>
+                                            <td className="p-2 whitespace-nowrap" colSpan={2}>Totales</td>
+                                            <td className="p-2 whitespace-nowrap">
+                                                {
+                                                    payments?.reduce((total, pay) => total + pay.amount, 0).toFixed(2)
+                                                }
+                                            </td>
+                                            <td className="p-2 whitespace-nowrap">
+                                                {/* {
+                                                    payments?.reduce((total, pay) => total + pay.remainingAmount, 0).toFixed(2)
+                                                } */}
+                                            </td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </Modal>
                     </div>
                 )
             }
