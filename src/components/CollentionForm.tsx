@@ -5,27 +5,22 @@ import dayjs from 'dayjs';
 import Swal from 'sweetalert2';
 
 function CollentionForm({ titleForm, onSubmit, formDataParams, onClick }) {
-    console.log("datos",formDataParams);
-    //const [formData, setFormData] = React.useState(formDataParams);
     const dateFormat = 'DD/MM/YYYY';
     const date = new Date();
-        // Crear la fecha mínima a partir del objeto Date (formato nativo)
     const [startDate, setStartDate] = React.useState(`${date.getDate().toString().padStart(2, '0')}/${(date.getMonth()+1).toString().padStart(2,'0')}/${date.getFullYear()}`);
     const [formData, setFormData] = React.useState({...formDataParams, payDate: startDate});
 
     function onChange(date, dateString) {
-        //setDate(date);
         console.log(date);
         setStartDate(dateString);
         setFormData({...formData, payDate: dateString});
     }
-    // Maneja el cambio en los inputs
+    
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
     };
 
-    // Maneja el envío del formulario
     const handleSubmit = (e) => {
         e.preventDefault();
         if(formData.amount > 0){
