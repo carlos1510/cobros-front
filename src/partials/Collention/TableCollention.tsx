@@ -20,9 +20,10 @@ interface TableCollentionProps {
     data: Collention[];
     onClick: () => void; // Ajusta el tipo del parámetro si es necesario
     onPayClick: (item: Collention) => void;
+    onDeleteClick: (item: Collention) => void;
 }
 
-function TableCollention({ data, onClick, onPayClick }: TableCollentionProps) {
+function TableCollention({ data, onClick, onPayClick, onDeleteClick }: TableCollentionProps) {
     return (
         <div className="col-span-full xl:col-span-6 bg-teal-50 dark:bg-gray-800 shadow-sm rounded-xl">
             <div className="p-3">
@@ -79,7 +80,7 @@ function TableCollention({ data, onClick, onPayClick }: TableCollentionProps) {
                                                 </button>
                                             </td>
                                             <td className="p-2 whitespace-nowrap text-gray-600 dark:text-gray-400">
-                                                <button className="bg-red-500 hover:bg-gray-700 text-white font-bold py-2 px-3 mr-1" title="Ver Pagos">
+                                                <button className="bg-red-500 hover:bg-gray-700 text-white font-bold py-2 px-3 mr-1" title="Eliminar" onClick={() => {onDeleteClick(item)}}>
                                                     <FaTrashAlt />
                                                 </button>
                                             </td>

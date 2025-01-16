@@ -6,7 +6,7 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 import { DatePicker } from 'antd';
 import dayjs from 'dayjs';
-import { formatoFecha } from '../../utils/FormDate';
+import { formatoFecha, formatoFecha2 } from '../../utils/FormDate';
 import { authProvider } from '../../auth';
 
 const initialValues = {
@@ -64,23 +64,33 @@ function Loan() {
             }
 
             if (response.data.ok){
+                const updatedLoan = response.data.data;
+                setLoans((prevList) => {
+                    if (isEdit) {
+                        return prevList.map((loan) =>
+                            loan.id === updatedLoan.id ? updatedLoan : loan
+                        );
+                    } else {
+                        return [...prevList, updatedLoan];
+                    }
+                });
                 setFormData({...initialValues, userId: userId});
                 setIsRegister(false);
                 setIsEdit(false);
                 Swal.fire({
                     icon: 'success',
                     title: 'Exito!',
-                    html: `<p>Se <strong>Registro</strong> correctamente los datos</p>`,
+                    html: `<p>Se <strong>${isEdit?'Actualizó':'Registro'}</strong> correctamente los datos</p>`,
                     timer: 3000,
                     position: 'center'
                 });
-                handleCreditList();
             } else {
                 Swal.fire({
                     icon: "error",
                     title: "Error!", 
-                    text: "No se pudo completar con el registro", 
-                    timer: 3000
+                    text: `No se pudo completar con ${isEdit?'la actualización':'el registro'}`, 
+                    timer: 3000,
+                position: 'center'
                 });
             }
         } catch (error){
@@ -106,6 +116,51 @@ function Loan() {
             setServicios(response.data.data);
         }
     }
+
+    const handleLoanSelect = (loan) => {
+        console.log(loan);
+        
+        setFormData({...initialValues, id: loan.id, numberDocument: loan.client.numberDocument, 
+        fullName: loan.client.fullName, address: loan.client.address, reference: loan.client.reference, 
+        phone: loan.client.phone, creditDate: formatoFecha2(loan.creditDate), amount: loan.amount, 
+        endDate: formatoFecha2(loan.endDate), interestAmount: loan.interestAmount,
+        totalAmount: loan.totalAmount, serviceId: loan.serviceId,
+        clientId: loan.clientId, userId: loan.userId});
+
+        //setStartDate(loan.creditDate);
+    };
+
+    const handleDelete = async (loan) => {
+        const result = await Swal.fire({
+            title: 'Desea Eliminar?',
+            text: `Se eliminará el crédito de ${loan.client.fullName}`,
+            showCancelButton: true,
+            confirmButtonText: 'Eliminar',
+            cancelButtonText: 'Cancelar',
+            customClass: {
+              actions: 'my-actions',
+              cancelButton: 'order-1 right-gap',
+              confirmButton: 'order-2',
+              denyButton: 'order-3',
+            },
+          });
+
+          if (result.isConfirmed) {
+            try {
+              const response = await axios.delete(`${process.env.PUBLIC_URL}/credits/destroy/${loan.id}`);
+              if (response.data.ok) {
+                setLoans((prevLoans) => prevLoans.filter((item) => item.id !== loan.id));
+                Swal.fire('Eliminado!', `El crédito de ${loan.client.fullName} ha sido eliminado.`, 'success');
+              } else {
+                Swal.fire('Error', 'No se pudo eliminar el crédito.', 'error');
+              }
+            } catch (error) {
+              Swal.fire('Error', 'Ocurrió un error al intentar eliminar el crédito.', 'error');
+              console.error(error);
+            }
+          }
+    }
+
     return (
         <>
             {
@@ -141,7 +196,7 @@ function Loan() {
                             </button>                
                         </div>
                         
-                        <TableLoan data={loans} onClick={() => setIsEdit(true)} />
+                        <TableLoan data={loans} onClick={() => setIsEdit(true)} onLoanClick={handleLoanSelect} onDeleteClick={handleDelete} />
                     </div>
                 )
             }

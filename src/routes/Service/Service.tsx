@@ -87,6 +87,38 @@ function Service() {
         const response = await axios.get(`${process.env.PUBLIC_URL}/services/${user_id}`);
         setServices(response.data.data);
     }
+
+    const handleDelete = async (service) => {
+        const result = await Swal.fire({
+            title: 'Desea Eliminar?',
+            text: `Se eliminará el servicio ${service.serviceName}`,
+            showCancelButton: true,
+            confirmButtonText: 'Eliminar',
+            cancelButtonText: 'Cancelar',
+            customClass: {
+              actions: 'my-actions',
+              cancelButton: 'order-1 right-gap',
+              confirmButton: 'order-2',
+              denyButton: 'order-3',
+            },
+          });
+
+          if (result.isConfirmed) {
+            try {
+              const response = await axios.delete(`${process.env.PUBLIC_URL}/services/destroy/${service.id}`);
+              if (response.data.ok) {
+                setServices((prevServices) => prevServices.filter((item) => item.id !== service.id));
+                Swal.fire('Eliminado!', `El servicio ha sido eliminado.`, 'success');
+              } else {
+                Swal.fire('Error', 'No se pudo eliminar el servicio.', 'error');
+              }
+            } catch (error) {
+              Swal.fire('Error', 'Ocurrió un error al intentar eliminar el servicio.', 'error');
+              console.error(error);
+            }
+          }
+    }
+
     return (
         <>
             {
@@ -110,7 +142,7 @@ function Service() {
                         </div>
                     </div>
                     {/* Card (Users) */}
-                    <TableService data={services} onClick={() => setIsEdit(true)} onServiceClick={handleServiceSelect} />
+                    <TableService data={services} onClick={() => setIsEdit(true)} onServiceClick={handleServiceSelect} onDeleteClick={handleDelete} />
                 </div>)
             }
 

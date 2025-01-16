@@ -12,9 +12,10 @@ interface TableServiceProps {
     data: Service[];
     onClick: () => void; 
     onServiceClick: (item: Service) => void;
+    onDeleteClick: (item: Service) => void;
 }
 
-function TableService({data, onClick, onServiceClick}: TableServiceProps) {
+function TableService({data, onClick, onServiceClick, onDeleteClick}: TableServiceProps) {
     return (
         <div className="col-span-full xl:col-span-6 bg-teal-50 dark:bg-gray-800 shadow-sm rounded-xl">
             <div className="p-3">
@@ -71,7 +72,7 @@ function TableService({data, onClick, onServiceClick}: TableServiceProps) {
                                                 </button>
                                             </td>
                                             <td className="p-2 whitespace-nowrap text-gray-600 dark:text-gray-400">
-                                                <button className="bg-red-500 hover:bg-gray-700 text-white font-bold py-2 px-3 mr-1" title="Ver Pagos">
+                                                <button className="bg-red-500 hover:bg-gray-700 text-white font-bold py-2 px-3 mr-1" title="Ver Pagos" onClick={() => {onDeleteClick(service)}}>
                                                     <FaTrashAlt />
                                                 </button>
                                             </td>

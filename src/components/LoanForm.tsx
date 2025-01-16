@@ -10,8 +10,9 @@ function LoanForm({ titleForm, onSubmit, formDataParams, services, onClick }) {
     const serviceIdRef = React.useRef<HTMLSelectElement>(null);
     const date = new Date();
         // Crear la fecha mínima a partir del objeto Date (formato nativo)
-    const [startDate, setStartDate] = React.useState(`${date.getDate().toString().padStart(2, '0')}/${(date.getMonth()+1).toString().padStart(2,'0')}/${date.getFullYear()}`);
-    const [endDate, setEndDate] = React.useState(null);
+    //const [startDate, setStartDate] = React.useState(`${date.getDate().toString().padStart(2, '0')}/${(date.getMonth()+1).toString().padStart(2,'0')}/${date.getFullYear()}`);
+    const [startDate, setStartDate] = React.useState(titleForm==='Editar'?formDataParams.creditDate:`${date.getDate().toString().padStart(2, '0')}/${(date.getMonth()+1).toString().padStart(2,'0')}/${date.getFullYear()}`);
+    const [endDate, setEndDate] = React.useState(titleForm==='Editar'?dayjs(formDataParams.endDate, dateFormat):null);
     const [formData, setFormData] = React.useState({...formDataParams, creditDate: startDate});
 
     const disabledDate = (current) => {
@@ -26,7 +27,7 @@ function LoanForm({ titleForm, onSubmit, formDataParams, services, onClick }) {
         if (serviceIdRef.current.value){
             if(serviceIdRef.current.value !== '0'){
                 const [service] = services.filter(item => parseInt(item.id) === parseInt(serviceIdRef.current?.value));
-                const fechaArray = startDate.split("/");
+                const fechaArray = dateString.split("/");
                 const fecha = new Date(fechaArray[2]+"-"+fechaArray[1]+"-"+fechaArray[0]);
                 let fechagenerado = "";
                 if(service.period === 'DIAS'){
@@ -42,7 +43,7 @@ function LoanForm({ titleForm, onSubmit, formDataParams, services, onClick }) {
                 }
                 setEndDate(dayjs(fechagenerado, dateFormat));
 
-                setFormData({...formData, creditDate: startDate, endDate: fechagenerado, serviceId: serviceIdRef.current.value});
+                setFormData({...formData, creditDate: dateString, endDate: fechagenerado, serviceId: serviceIdRef.current.value});
             }
             
         }
@@ -50,6 +51,7 @@ function LoanForm({ titleForm, onSubmit, formDataParams, services, onClick }) {
 
     function onChangeEnd(date, dateString) {
         setFormData({...formData, endDate: dateString});
+        setEndDate(dayjs(dateString, dateFormat));
         console.log(date);
     }
 
