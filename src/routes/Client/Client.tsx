@@ -6,6 +6,7 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 import Modal from '../../components/common/Modal';
 import { authProvider } from '../../auth';
+import { formatoFecha2 } from '../../utils/FormDate';
 
 const initialValues = {
     id: 0,
@@ -96,7 +97,6 @@ function Client() {
         setClient(client);
         const response = await axios.get(`${process.env.PUBLIC_URL}/fees/${client.id}/findPayments`);
         setPayments(response.data.data);
-        console.log(client);
     }
 
 
@@ -225,9 +225,9 @@ function Client() {
                                             payments?.map((pay, index) => (
                                                 <tr key={index}>
                                                     <td className="p-2 whitespace-nowrap">{index + 1}</td>
-                                                    <td className="p-2 whitespace-nowrap">{pay.payDate}</td>
+                                                    <td className="p-2 whitespace-nowrap">{formatoFecha2(pay.payDate)}</td>
                                                     <td className="p-2 whitespace-nowrap">{pay.amount}</td>
-                                                    <td className="p-2 whitespace-nowrap">{pay.remainingAmount}</td>
+                                                    <td className="p-2 whitespace-nowrap"></td>
                                                 </tr>
                                             ))
                                         }

@@ -23,9 +23,11 @@ interface Loan {
 interface TableLoanProps {
     data: Loan[];
     onClick: () => void; 
+    onLoanClick: (item: Loan) => void;
+    onDeleteClick: (item: Loan) => void;
 }
 
-function TableLoan({ data, onClick }: TableLoanProps) {
+function TableLoan({ data, onClick, onLoanClick, onDeleteClick }: TableLoanProps) {
     return (
         <div className="col-span-full xl:col-span-6 bg-teal-50 dark:bg-gray-800 shadow-sm rounded-xl">
             <div className="p-3">
@@ -67,11 +69,11 @@ function TableLoan({ data, onClick }: TableLoanProps) {
                         </thead>
                         <tbody className="text-sm divide-y divide-gray-100 dark:divide-gray-700/60">
                             {
-                                data?.map((user) => {
+                                data?.map((user, index) => {
                                     return (
                                         <tr key={user.id}>
                                             <td className="p-2 whitespace-nowrap text-gray-600 dark:text-gray-400">
-                                                {user.id}
+                                                {index + 1}
                                             </td>
                                             <td className="p-2 whitespace-nowrap text-gray-600 dark:text-gray-400">
                                                 {user?.service.serviceName}
@@ -96,12 +98,12 @@ function TableLoan({ data, onClick }: TableLoanProps) {
                                                 S/. {user.totalAmount}
                                             </td>
                                             <td className="p-2 whitespace-nowrap text-gray-600 dark:text-gray-400">
-                                                <button className="bg-teal-600 hover:bg-teal-800 text-white py-2 px-3 mr-1" title="Cobrar" onClick={onClick}>
+                                                <button className="bg-teal-600 hover:bg-teal-800 text-white py-2 px-3 mr-1" title="Editar" onClick={() => {onClick(); onLoanClick(user) }}>
                                                     <FaPencilAlt />
                                                 </button>
                                             </td>
                                             <td className="p-2 whitespace-nowrap text-gray-600 dark:text-gray-400">
-                                                <button className="bg-red-500 hover:bg-gray-700 text-white font-bold py-2 px-3 mr-1" title="Ver Pagos">
+                                                <button className="bg-red-500 hover:bg-gray-700 text-white font-bold py-2 px-3 mr-1" title="Eliminar" onClick={() => {onDeleteClick(user)}}>
                                                     <FaTrashAlt />
                                                 </button>
                                             </td>
