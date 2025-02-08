@@ -26,7 +26,7 @@ function Dashboard() {
     const dateFormat = 'DD/MM/YYYY';
     const date = new Date();
     const [startDate, setStartDate] = React.useState(`${date.getDate().toString().padStart(2, '0')}/${(date.getMonth()+1).toString().padStart(2,'0')}/${date.getFullYear()}`);
-    const [endDate, setEndDate] = React.useState(`${date.getDate().toString().padStart(2, '0')}/${(date.getMonth()+1).toString().padStart(2,'0')}/${date.getFullYear()}`);
+    //const [endDate, setEndDate] = React.useState(`${date.getDate().toString().padStart(2, '0')}/${(date.getMonth()+1).toString().padStart(2,'0')}/${date.getFullYear()}`);
     const [userId, setUserId] = React.useState(0);
     const [datos, setDatos] = React.useState(null);
 
@@ -46,13 +46,13 @@ function Dashboard() {
         console.log(date);
     }
 
-    function onChangeEnd(date, dateString) {
+    /*function onChangeEnd(date, dateString) {
         //setFormData({...formData, endDate: dateString});
         setEndDate(dateString);
         //const fechaArray = endDate.split("/");
         //const fecha = new Date(fechaArray[2]+"-"+fechaArray[1]+"-"+fechaArray[0]);
         console.log(date);
-    }
+    }*/
 
     const handleDashboardIndex = async () => {
         //const response = await axios.get(`${process.env.PUBLIC_URL}/credits/date/${formatoFecha(startDate)}`);
@@ -61,7 +61,7 @@ function Dashboard() {
             {
               params: {
                 fecha_inicio: startDate,
-                fecha_fin: endDate,
+                //fecha_fin: endDate,
               },
             }
           );
@@ -92,7 +92,7 @@ function Dashboard() {
                               
                                 />
                             </div>
-                            <div className="relative">
+                            {/* <div className="relative">
                                 <DatePicker className="appearance-none block w-full border border-gray-400 rounded-md py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" 
                                     format={dateFormat} 
                                     defaultValue={dayjs(endDate, dateFormat)}
@@ -102,7 +102,7 @@ function Dashboard() {
                                     id="endDateTxt"                                    
                               
                                 />
-                            </div>
+                            </div> */}
                             
                             <button 
                                 className="btn bg-gray-900 text-gray-100 px-2 py-2 rounded-md hover:bg-teal-600 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white flex items-center justify-center"
@@ -116,26 +116,52 @@ function Dashboard() {
                         </div>
             </div>
             <div className="mt-6">
+                <div className="mb-4">
+                    <h1 className="text-xl text-teal-700 dark:text-gray-100 font-bold">CIERRE DEL DIA</h1>
+                </div>
                 <div className="mb-12 grid gap-y-10 gap-x-6 md:grid-cols-2 xl:grid-cols-4">
-                    <StatisticsCard key="amountPay" title="Monto Cobrado" color="teal" value={`S/. ${datos?.resultMontoCobro.total_cobros?datos?.resultMontoCobro.total_cobros:0}`}
-                    icon={React.createElement(BanknotesIcon, {
-                        className: "w-6 h-6 text-white",
-                    })}
+                    <StatisticsCard key="amountPay" title="Total Cobros" color="teal" value={`S/. ${datos?.resultMontoCobro.total_cobros?datos?.resultMontoCobro.total_cobros:0}`}
+                        icon={React.createElement(BanknotesIcon, {
+                            className: "w-6 h-6 text-white",
+                        })}
                     ></StatisticsCard>
 
-                    <StatisticsCard key="amountCreditNews" title="Créditos Nuevos" color="teal" value={`S/. ${datos?.resultMontoCredito.total_creditos?datos?.resultMontoCredito.total_creditos:0}`}
-                    icon={React.createElement(ChartBarIcon, {
-                        className: "w-6 h-6 text-white",
-                    })}
+                    <StatisticsCard key="amountCreditNews" title="Total Créditos" color="teal" value={`S/. ${datos?.resultMontoCredito.total_creditos?datos?.resultMontoCredito.total_creditos:0}`}
+                        icon={React.createElement(ChartBarIcon, {
+                            className: "w-6 h-6 text-white",
+                        })}
                     ></StatisticsCard>
 
+                    <StatisticsCard key="montoCierre" title="Monto de Cierre del Día" color="teal" value={`S/. ${(datos?.resultMontoCobro.total_cobros?datos?.resultMontoCobro.total_cobros:0) - (datos?.resultMontoCredito.total_creditos?datos?.resultMontoCredito.total_creditos:0)}`}
+                        icon={React.createElement(ChartBarIcon, {
+                            className: "w-6 h-6 text-white",
+                        })}
+                    ></StatisticsCard>
+                    
+                </div>
+                <div className="mb-4">
+                    <h1 className="text-xl text-teal-700 dark:text-gray-100 font-bold">TOTALES ACUMULADOS</h1>
+                </div>
+                <div className="mb-12 grid gap-y-10 gap-x-6 md:grid-cols-2 xl:grid-cols-4">
                     <StatisticsCard key="totalCredit" title="Total Créditos Activos" color="teal" value={`S/. ${datos?.resultMontoTotalCredito.total_creditos?datos?.resultMontoTotalCredito.total_creditos:0}`}
                         icon={React.createElement(ChartBarIcon, {
                             className: "w-6 h-6 text-white",
                         })}
                     ></StatisticsCard>
 
-                    <StatisticsCard key="cantClient" title="Total Clientes" color="teal" value={`S/. ${datos?.resultCantClient.total_client?datos?.resultCantClient.total_client:0}`}
+                    <StatisticsCard key="totalCobros" title="Total Cobros Acumulados" color="teal" value={`S/. ${datos?.resultMontoCobroActivo.total_cobros_activos?datos?.resultMontoCobroActivo.total_cobros_activos:0}`}
+                        icon={React.createElement(ChartBarIcon, {
+                            className: "w-6 h-6 text-white",
+                        })}
+                    ></StatisticsCard>
+
+                    <StatisticsCard key="totalRestante" title="Total Restante" color="teal" value={`S/. ${(datos?.resultMontoTotalCredito.total_creditos?datos?.resultMontoTotalCredito.total_creditos:0) - (datos?.resultMontoCobroActivo.total_cobros_activos?datos?.resultMontoCobroActivo.total_cobros_activos:0)}`}
+                        icon={React.createElement(ChartBarIcon, {
+                            className: "w-6 h-6 text-white",
+                        })}
+                    ></StatisticsCard>
+
+                    <StatisticsCard key="cantClient" title="Total Clientes Activos" color="teal" value={`S/. ${datos?.resultCantClient.total_client?datos?.resultCantClient.total_client:0}`}
                     icon={React.createElement(UsersIcon, {
                         className: "w-6 h-6 text-white",
                     })}
@@ -151,7 +177,7 @@ function Dashboard() {
                                 <p className="antialiased font-sans text-sm leading-normal flex items-center gap-1 font-normal text-blue-gray-600">
                                     {React.createElement(ClockIcon, {
                                         className: "w-4 h-4 text-gray-300",
-                                    })} <strong>vencimiento</strong> dentro de la fecha de busqueda
+                                    })} <strong>vencimiento</strong> en los próximos 7 días desde la fecha de busqueda
                                 </p>
                             </div>
                         </div>
