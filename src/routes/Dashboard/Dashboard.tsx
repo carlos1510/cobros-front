@@ -55,7 +55,6 @@ function Dashboard() {
     }*/
 
     const handleDashboardIndex = async () => {
-        //const response = await axios.get(`${process.env.PUBLIC_URL}/credits/date/${formatoFecha(startDate)}`);
         const response = await axios.get(
             `${process.env.PUBLIC_URL}/dashboard/${userId}`,
             {
@@ -66,7 +65,6 @@ function Dashboard() {
             }
           );
         setDatos(response.data.data);
-        console.log(response.data.data);
     }
 
     return (
