@@ -1,5 +1,5 @@
 ;
-import PropTypes from "prop-types";
+//import PropTypes from "prop-types";
 function StatisticsCard({ color, icon, title, value }){
     return (
         <div className={`relative flex flex-col bg-clip-border rounded-xl bg-${color} text-gray-700 border border-blue-100 shadow-sm`}>
@@ -20,7 +20,7 @@ function StatisticsCard({ color, icon, title, value }){
     );
 }
 
-StatisticsCard.defaultProps = {
+/*StatisticsCard.defaultProps = {
     color: "blue",
     footer: null,
   };
@@ -52,8 +52,8 @@ StatisticsCard.defaultProps = {
     title: PropTypes.node.isRequired,
     value: PropTypes.node.isRequired,
     footer: PropTypes.node,
-  };
+  };*/
 
-  StatisticsCard.displayName = "/src/components/widgets/cards/statistics-card.tsx";
+  StatisticsCard.displayName = "/src/components/widgets/cards/StatisticsCard.tsx";
 
 export default StatisticsCard;
